@@ -26,7 +26,7 @@ resource "docker_service" "db" {
 
   task_spec {
     container_spec {
-      image=docker_image.db.name
+      image = docker_image.db.name
 
       env = {
         POSTGRES_PASSWORD = var.postgres_password
@@ -41,8 +41,27 @@ resource "docker_service" "db" {
         bind_options {
           propagation = "rprivate"
         }
+
       }
     }
-  }  
+    placement {
+      constraints = [
+        "node.role==manager",
+      ]
+
+      prefs = [
+        "spread=node.role.manager",
+      ]
+
+      max_replicas = 1
+    }
+  }
+
+  endpoint_spec {
+    ports {
+      target_port    = "5432"
+      published_port = "5432"
+    }
+  }
 }
 

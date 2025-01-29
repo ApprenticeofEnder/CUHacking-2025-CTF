@@ -33,4 +33,4 @@ jobs:
           tofu -version
           # apply infra changes
           tofu -chdir=$TERRAFORM_DIR init
-          tofu -chdir=$TERRAFORM_DIR destroy -autoapprove
+          tofu -chdir=$TERRAFORM_DIR destroy -auto-approve

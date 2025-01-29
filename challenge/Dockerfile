@@ -1,19 +1,29 @@
-FROM node:lts-alpine as base
+FROM node:lts-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
+WORKDIR /app
+
 FROM base AS prod
 
-COPY pnpm-lock.yaml /app
-WORKDIR /app
-RUN pnpm fetch
+COPY package.json pnpm-lock.yaml /app/
+RUN pnpm install
 
 COPY . /app
-RUN pnpm run build
+RUN --mount=type=secret,id=DATABASE_URL \
+    DATABASE_URL=$(cat /run/secrets/DATABASE_URL) \
+    pnpm run build
 
-FROM base
+FROM base AS final
 COPY --from=prod /app/node_modules /app/node_modules
 COPY --from=prod /app/.svelte-kit /app/.svelte-kit
+COPY --from=prod \
+    /app/entrypoint.sh \
+    /app/package.json \
+    /app/pnpm-lock.yaml \
+    /app/drizzle.config.ts \
+    /app/vite.config.ts \
+    /app/
 EXPOSE 3000
-CMD [ "/app/docker/entrypoint.sh" ]
+ENTRYPOINT [ "./entrypoint.sh" ]

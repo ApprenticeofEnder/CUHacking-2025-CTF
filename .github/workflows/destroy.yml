@@ -8,7 +8,7 @@ env:
   TERRAFORM_DIR: terraform
 
 jobs:
-  deploy:
+  destroy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
@@ -32,4 +32,5 @@ jobs:
           scripts/install-opentofu.sh --install-method deb
           tofu -version
           # apply infra changes
+          tofu -chdir=$TERRAFORM_DIR init
           tofu -chdir=$TERRAFORM_DIR destroy

@@ -33,4 +33,5 @@ jobs:
           tofu -version
           # apply infra changes
           tofu -chdir=$TERRAFORM_DIR init
-          tofu -chdir=$TERRAFORM_DIR destroy
+          tofu -chdir=$TERRAFORM_DIR plan -out .terraform-plan
+          tofu -chdir=$TERRAFORM_DIR destroy .terraform-plan

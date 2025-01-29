@@ -11,5 +11,5 @@ export default {
 	dialect: 'postgresql',
 	dbCredentials: {
 		url: DATABASE_URL
-	}
+	},
 } satisfies Config;

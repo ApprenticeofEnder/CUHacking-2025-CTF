@@ -1,13 +1,38 @@
-variable "do_token" { sensitive = true }
-variable "ssh_user" {
-  default = "root"
+# Database Variables
+variable "postgres_capacity" {
+  default = "10Gi"
 }
-variable "public_key_path" {
-  default = "cuhacking_ctf.pub"
-}
-variable "private_key_path" {
-  default = "cuhacking_ctf.pem"
-}
-variable "postgres_password" {
+
+variable "postgres_app_name" {
   default = "postgres"
+}
+
+variable "postgres_db" {
+  default = "pilots"
+}
+
+variable "postgres_user" {
+  default = "postgres"
+}
+
+variable "postgres_password" {
+  type      = string
+  sensitive = true
+}
+
+# Challenge Variables
+variable "challenge_app_name" {
+  default = "challenge"
+}
+
+variable "image_registry"{
+  default = "ghcr.io"
+}
+
+variable "challenge_image_name" {
+  default = "ApprenticeofEnder/CUHacking-2025-CTF"
+}
+
+variable "challenge_image_tag" {
+  default = "latest"
 }

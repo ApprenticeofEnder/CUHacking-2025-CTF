@@ -1,1 +1,0 @@
-<h1>Pilot data</h1>

@@ -1,0 +1,4 @@
+.env
+.gitignore
+nod_modules
+.svelte-kit

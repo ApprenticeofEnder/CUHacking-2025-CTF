@@ -1,9 +1,0 @@
-- name: Initialize Services 
-  hosts: swarm_leader
-  gather_facts: yes
-  tasks:
-    - command: "docker network create --driver overlay pilot_db_network"
-    - command: "mkdir -p ~/docker/volumes/postgres"
-    - command: "docker swarm join-token -q worker"
-      register: swarm_token
-    - set_fact: swarmtoken="{{swarm_token.stdout}}"

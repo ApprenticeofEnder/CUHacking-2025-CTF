@@ -1,0 +1,1 @@
+ALTER TABLE "pilots" ADD COLUMN "classified" boolean NOT NULL DEFAULT FALSE;

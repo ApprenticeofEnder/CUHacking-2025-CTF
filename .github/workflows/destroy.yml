@@ -1,0 +1,33 @@
+name: deploy
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  TERRAFORM_DIR: terraform
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@main
+      
+      - name: Set version
+        id: release
+        run: echo ::set-output name=version::$(git describe --always)
+      
+      - name: Destroy
+        env:
+          DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
+          SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
+          TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
+          TF_VAR_image_registry: ${{ env.REGISTRY }}
+          TF_VAR_challenge_image_name: ${{ env.IMAGE_NAME }}
+          TF_VAR_challenge_image_tag: ${{ steps.release.outputs.version }}
+        run: |
+          # install opentofu
+          scripts/install-opentofu.sh --install-method deb
+          tofu -version
+          # apply infra changes
+          tofu -chdir=$TERRAFORM_DIR destroy

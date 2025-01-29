@@ -3,7 +3,7 @@ data "digitalocean_kubernetes_versions" "list" {
 }
 
 resource "digitalocean_kubernetes_cluster" "ctf_k8s" {
-  name    = "cuhacking_2025_ctf_k8s"
+  name    = "cuhacking-2025-ctf-k8s"
   region  = "tor1"
   version = data.digitalocean_kubernetes_versions.list.latest_version
 

@@ -6,7 +6,7 @@ terraform {
     }
   }
   backend "s3" {
-    endpoint                    = "https://tor.digitaloceanspaces.com"
+    endpoint                    = "https://tor1.digitaloceanspaces.com"
     region                      = "us-west-1" # Just a placeholder, not used
     key                         = "cuhacking-2025/terraform/terraform.tfstate"
     bucket                      = "rbabaev-terraform-storage"

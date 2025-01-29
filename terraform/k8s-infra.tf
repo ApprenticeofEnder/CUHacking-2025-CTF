@@ -195,10 +195,26 @@ resource "kubernetes_deployment" "challenge" {
           }
           port {
             name = "http"
-            container_port = 8000
+            container_port = var.challenge_port
           }
         }
       }
+    }
+  }
+}
+
+resource "kubernetes_service" "challenge" {
+  metadata {
+    name = "challenge"
+  }
+
+  spec {
+    selector = {
+      app = var.challenge_app_name
+    }
+    port {
+      port = 80
+      target_port = var.challenge_port
     }
   }
 }

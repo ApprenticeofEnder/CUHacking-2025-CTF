@@ -1,67 +1,54 @@
-# name: deploy
+name: deploy
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# env:
-#   REGISTRY: ghcr.io
-#   IMAGE_NAME: ${{ github.repository }}
-#   TERRAFORM_DIR: terraform
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  TERRAFORM_DIR: terraform
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout main
-#         uses: actions/checkout@main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@main
 
-#       - name: Set version
-#         id: release
-#         run: echo ::set-output name=version::$(git describe --always)
+      - name: Set version
+        id: release
+        run: echo ::set-output name=version::$(git describe --always)
 
-#       - name: Build container image
-#         env:
-#           IMAGE_TAG: ${{ steps.release.outputs.version }}
-#         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} challenge
+      - name: Build container image
+        env:
+          IMAGE_TAG: ${{ steps.release.outputs.version }}
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} challenge
       
-#       - name: Docker Login
-#         run: echo ${{ secrets.CI_PAT }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+      - name: Docker Login
+        run: echo ${{ secrets.CI_PAT }} | docker login ${{ env.REGISTRY }} -u ${{ github.repository_owner }} --password-stdin
 
-#       - name: Push image to Docker Registry
-#         env:
-#           IMAGE_TAG: ${{ steps.release.outputs.version }}
-#         run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+      - name: Push image to Docker Registry
+        env:
+          IMAGE_TAG: ${{ steps.release.outputs.version }}
+        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
       
-#       - name: Deploy
-#         env:
-#           DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
-#           SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
-#           SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
-#           TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
-#           TF_VAR_image_registry: ${{ env.REGISTRY }}
-#           TF_VAR_challenge_image_name: ${{ env.IMAGE_NAME }}
-#           TF_VAR_challenge_image_tag: ${{ steps.release.outputs.version }}
-#         run: |
-#           # install opentofu
-#           scripts/install-opentofu.sh --install-method deb
-#           tofu -version
-#           # apply infra changes
-#           tofu -chdir=$TERRAFORM_DIR init
-#           tofu -chdir=$TERRAFORM_DIR validate
-#           tofu -chdir=$TERRAFORM_DIR plan -out .terraform-plan
-#           tofu -chdir=$TERRAFORM_DIR apply .terraform-plan
-
-#       # - name: Deploy to doks
-#       #   env:
-#       #     VERSION: ${{ steps.release.outputs.version }}
-#       #     CLUSTER_CONFIG: "${{ secrets.CI_DOKS }}"
-#       #   run: |
-#       #     wget https://github.com/digitalocean/doctl/releases/download/v1.120.1/doctl-1.120.1-linux-amd64.tar.gz
-
-#       #     echo "${CLUSTER_CONFIG}" > .kubeconfig
-#       #     export DOCKER_IMG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}"
-#       #     # the following line adds the proper docker image path of our application service in kubernetes manifest
-#       #     cat k8s/application.yaml | sed "s|IMAGE_PLACEHOLDER|$DOCKER_IMG|g" > application-with-image.yaml
-#       #     kubectl --kubeconfig=.kubeconfig apply -f application-with-image.yaml
+      - name: Deploy
+        env:
+          DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
+          SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
+          TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
+          TF_VAR_image_registry: ${{ env.REGISTRY }}
+          TF_VAR_challenge_image_name: ${{ env.IMAGE_NAME }}
+          TF_VAR_challenge_image_tag: ${{ steps.release.outputs.version }}
+        run: |
+          # install opentofu
+          scripts/install-opentofu.sh --install-method deb
+          tofu -version
+          # apply infra changes
+          tofu -chdir=$TERRAFORM_DIR init
+          tofu -chdir=$TERRAFORM_DIR validate
+          tofu -chdir=$TERRAFORM_DIR plan -out .terraform-plan
+          tofu -chdir=$TERRAFORM_DIR apply .terraform-plan

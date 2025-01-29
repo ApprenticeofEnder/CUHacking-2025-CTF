@@ -15,5 +15,5 @@ RUN pnpm run build
 FROM base
 COPY --from=prod /app/node_modules /app/node_modules
 COPY --from=prod /app/.svelte-kit /app/.svelte-kit
-EXPOSE 8000
-CMD [ "pnpm", "preview" ]
+EXPOSE 3000
+CMD [ "/app/docker/entrypoint.sh" ]

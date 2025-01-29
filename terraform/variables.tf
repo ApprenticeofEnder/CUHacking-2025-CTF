@@ -36,3 +36,7 @@ variable "challenge_image_name" {
 variable "challenge_image_tag" {
   default = "latest"
 }
+
+variable "challenge_port" {
+  default = 3000
+}

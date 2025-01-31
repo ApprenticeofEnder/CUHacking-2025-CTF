@@ -5,9 +5,10 @@
 	const result = $derived(data.result);
 </script>
 
-<h1>Pilots</h1>
-{#each result as pilot }
+<h1>Notices</h1>
+{#each result as notice }
 	<div class="p-4 border-2 border-primary">
-		<h2>{pilot.name} ({pilot.callsign})</h2>
+		<h2 class="flex justify-between">{notice.title} {notice.author}</h2>
+        <p>{notice.note}</p>
 	</div>
 {/each}

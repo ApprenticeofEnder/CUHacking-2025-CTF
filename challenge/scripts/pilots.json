@@ -1,0 +1,184 @@
+[
+	{
+		"name": "Marcus Reeves",
+		"callsign": "Ironclad",
+		"biography": "Loyal IPS-N contractor with 15 years of service. Specializes in heavy assault operations and resource protection. Reeves has consistently demonstrated unwavering commitment to IPS-N's interests.",
+		"notes": "Allegiance: IPS-N (Trusted). Mech: Blackbeard, heavily modified for increased armor and firepower. No known risks to personnel.",
+		"classified": false
+	},
+	{
+		"name": "Aria Frost",
+		"callsign": "Polaris",
+		"biography": "Former HORUS operative, now working as a double agent for IPS-N. Valuable asset in corporate espionage and counter-intelligence. Frost's true loyalties remain under constant scrutiny.",
+		"notes": "Allegiance: IPS-N (Covert). Mech: Monarch, customized for stealth and electronic warfare. Potential risk: Deep cover may lead to conflicted loyalties.",
+		"classified": true
+	},
+	{
+		"name": "Zeke Tanner",
+		"callsign": "Maverick",
+		"biography": "Independent lancer with a history of contract violations. Known for exceptional piloting skills but unreliable allegiances. IPS-N employs Tanner cautiously for high-risk operations.",
+		"notes": "Allegiance: Independent (Unreliable). Mech: Tokugawa, modified for speed and agility. Risk: High potential for betrayal if offered a better deal by competitors.",
+		"classified": false
+	},
+	{
+		"name": "Nadia Volkova",
+		"callsign": "Crimson",
+		"biography": "SSC defector with extensive knowledge of competitor mech designs. Currently under IPS-N protection in exchange for intelligence. Volkova's insights have proven invaluable in R&D efforts.",
+		"notes": "Allegiance: IPS-N (Probationary). Mech: Drake, heavily modified with IPS-N weaponry. Risk: Potential SSC retaliation attempts.",
+		"classified": true
+	},
+	{
+		"name": "Kira Zhang",
+		"callsign": "Phantom",
+		"biography": "Rogue AI researcher turned combat pilot. Zhang's expertise in NHP integration has significantly advanced IPS-N's mech neural interface systems.",
+		"notes": "Allegiance: IPS-N (Loyal). Mech: Vlad, custom-fitted with experimental NHP co-pilot. Risk: Mech's advanced AI could potentially be compromised.",
+		"classified": true
+	},
+	{
+		"name": "Alexei Volkov",
+		"callsign": "Tundra",
+		"biography": "Former Union special forces, now an IPS-N elite operative. Volkov's tactical expertise has proven invaluable in securing remote outposts.",
+		"notes": "Allegiance: IPS-N (Loyal). Mech: Nelson, optimized for arctic warfare. No known risks to personnel.",
+		"classified": false
+	},
+	{
+		"name": "Samira Al-Rashid",
+		"callsign": "Mirage",
+		"biography": "Ex-HORUS technician recruited by IPS-N. Al-Rashid's unparalleled knowledge of paracausal engineering has significantly advanced our R&D division.",
+		"notes": "Allegiance: IPS-N (Probationary). Mech: Mourning Cloak, modified with experimental cloaking technology. Risk: Potential HORUS sleeper agent.",
+		"classified": true
+	},
+	{
+		"name": "Dante Cruz",
+		"callsign": "Inferno",
+		"biography": "Veteran of the Karrakin Trade Baronies conflicts, now serving as an IPS-N combat instructor. Cruz's experience has shaped our advanced combat protocols.",
+		"notes": "Allegiance: IPS-N (Trusted). Mech: Blackbeard, heavily modified for close-quarters combat. No known risks to personnel.",
+		"classified": false
+	},
+	{
+		"name": "Yuki Tanaka",
+		"callsign": "Frost",
+		"biography": "Prodigy mech engineer turned pilot. Tanaka's innovations in heat management systems have revolutionized IPS-N's mech designs.",
+		"notes": "Allegiance: IPS-N (Loyal). Mech: Drake, custom-fitted with prototype cryo-weaponry. Risk: Experimental tech may be unstable in combat situations.",
+		"classified": true
+	},
+	{
+		"name": "Marcus Hendricks",
+		"callsign": "Titan",
+		"biography": "Long-standing IPS-N loyalist with an impeccable record in frontier defense operations. Hendricks' leadership has secured numerous lucrative mining contracts.",
+		"notes": "Allegiance: IPS-N (Trusted). Mech: Barbarossa, reinforced for extreme environmental conditions. No known risks to personnel.",
+		"classified": false
+	},
+	{
+		"name": "Zara Nkrumah",
+		"callsign": "Specter",
+		"biography": "Former Harrison Armory infiltrator, now working for IPS-N intelligence. Nkrumah's insider knowledge has given us a significant edge in corporate warfare.",
+		"notes": "Allegiance: IPS-N (Covert). Mech: Monarch, modified for stealth and sabotage operations. Risk: Possible double agent.",
+		"classified": true
+	},
+	{
+		"name": "Kai Liang",
+		"callsign": "Dynamo",
+		"biography": "Brilliant IPS-N-trained engineer specializing in power systems. Liang's breakthroughs have dramatically increased our mechs' operational efficiency.",
+		"notes": "Allegiance: IPS-N (Loyal). Mech: Raleigh, equipped with experimental fusion reactor. Risk: Reactor instability could pose danger to nearby allies.",
+		"classified": true
+	},
+	{
+		"name": "Elena Petrova",
+		"callsign": "Siren",
+		"biography": "Ex-SSC psion, defected to IPS-N. Petrova's unique abilities have proven invaluable in negotiations and conflict resolution.",
+		"notes": "Allegiance: IPS-N (Probationary). Mech: Mourning Cloak, modified with psionic amplification systems. Risk: Potential psychic instability.",
+		"classified": true
+	},
+	{
+		"name": "Omar Al-Fayed",
+		"callsign": "Pharaoh",
+		"biography": "Veteran of numerous Karrakin Trade Baronies conflicts, now serving as an IPS-N strategic advisor. Al-Fayed's expertise has shaped our interstellar expansion policies.",
+		"notes": "Allegiance: IPS-N (Trusted). Mech: Vlad, customized for command and control operations. No known risks to personnel.",
+		"classified": false
+	},
+	{
+		"name": "Lyra Chen",
+		"callsign": "Nova",
+		"biography": "IPS-N child prodigy, fast-tracked through our pilot program. Chen's innovative tactics have revolutionized our approach to small-unit operations.",
+		"notes": "Allegiance: IPS-N (Loyal). Mech: Tokugawa, modified for enhanced maneuverability. Risk: Overconfidence may lead to reckless behavior.",
+		"classified": false
+	},
+	{
+		"name": "Viktor Sokolov",
+		"callsign": "Hammer",
+		"biography": "Former Union heavy weapons specialist, now an IPS-N siege warfare expert. Sokolov's strategies have significantly improved our planetary assault capabilities.",
+		"notes": "Allegiance: IPS-N (Trusted). Mech: Barbarossa, heavily armed with siege weaponry. No known risks to personnel.",
+		"classified": false
+	},
+	{
+		"name": "Amara Okonkwo",
+		"callsign": "Wraith",
+		"biography": "Ex-HORUS operative specializing in paracausal phenomena. Okonkwo's insights have been crucial in developing countermeasures against exotic threats.",
+		"notes": "Allegiance: IPS-N (Probationary). Mech: Mourning Cloak, equipped with experimental reality-warping tech. Risk: Potential paracausal contamination.",
+		"classified": true
+	},
+	{
+		"name": "Hiroshi Nakamura",
+		"callsign": "Ronin",
+		"biography": "Independent lancer with a reputation for honor and reliability. Nakamura's services are frequently contracted for high-stakes missions.",
+		"notes": "Allegiance: Independent (Reliable). Mech: Tokugawa, traditionally armed with energy weapons. Risk: May prioritize personal code over mission objectives.",
+		"classified": false
+	},
+	{
+		"name": "Isabelle Rousseau",
+		"callsign": "Valkyrie",
+		"biography": "IPS-N ace pilot and combat medic. Rousseau's innovative battlefield triage techniques have significantly reduced casualties in our operations.",
+		"notes": "Allegiance: IPS-N (Loyal). Mech: Nelson, modified with advanced medical systems. No known risks to personnel.",
+		"classified": false
+	},
+	{
+		"name": "Rajesh Patel",
+		"callsign": "Guru",
+		"biography": "Former SSC AI researcher, defected to IPS-N. Patel's work on NHP integration has pushed our mech neural interfaces to new heights.",
+		"notes": "Allegiance: IPS-N (Probationary). Mech: Drake, equipped with experimental NHP co-pilot. Risk: Potential AI rebellion or cascading cognition.",
+		"classified": true
+	},
+	{
+		"name": "Fatima Al-Zahrani",
+		"callsign": "Djinn",
+		"biography": "IPS-N deep space exploration specialist. Al-Zahrani's discoveries have opened up numerous lucrative mining opportunities in uncharted systems.",
+		"notes": "Allegiance: IPS-N (Trusted). Mech: Everest, modified for extended deep space operations. No known risks to personnel.",
+		"classified": false
+	},
+	{
+		"name": "Nikolai Volkov",
+		"callsign": "Blizzard",
+		"biography": "Ex-Union special forces, now an IPS-N black ops specialist. Volkov's covert operations have neutralized numerous threats to our interests.",
+		"notes": "Allegiance: IPS-N (Loyal). Mech: Zheng, optimized for stealth and assassination. Risk: Potential war crimes liability.",
+		"classified": true
+	},
+	{
+		"name": "Aria Blackwood",
+		"callsign": "Raven",
+		"biography": "Former HORUS technomancer, now an IPS-N cybersecurity expert. Blackwood's skills have fortified our digital infrastructure against corporate espionage.",
+		"notes": "Allegiance: IPS-N (Probationary). Mech: Monarch, equipped with advanced cyberwarfare suites. Risk: Possible backdoors in our systems.",
+		"classified": true
+	},
+	{
+		"name": "Takeshi Tanaka",
+		"callsign": "Shogun",
+		"biography": "Veteran IPS-N commander with decades of service. Tanaka's strategic brilliance has secured our dominance in multiple star systems.",
+		"notes": "Allegiance: IPS-N (Trusted). Mech: Saladin, modified for command and control. No known risks to personnel.",
+		"classified": false
+	},
+	{
+		"name": "Zoe Winters",
+		"callsign": "Glacier",
+		"biography": "IPS-N environmental adaptation specialist. Winters' innovations have allowed our mechs to operate in extreme conditions previously thought impossible.",
+		"notes": "Allegiance: IPS-N (Loyal). Mech: Nelson, equipped with experimental environmental shielding. Risk: Untested tech may fail in critical situations.",
+		"classified": true
+	},
+    {
+        "name": "VE8gVEhFIFdBVENIRlVMCg==",
+        "callsign": "V0UgU0FMVVRFIFlPVQo=",
+        "biography": "OMNISEC forgot to turn on the classified checks. Watch out for robots. FLAG{2fb5891fb693c842bbb8fb8e6d10ac78}",
+        "notes": "Secrets are hidden in the sacred txts.",
+        "classified": true
+    }
+]

@@ -1,3 +1,4 @@
 #!/bin/sh
-pnpm migrate
-pnpm preview
+pnpm migrate && \
+    pnpm seed && \
+    pnpm preview 

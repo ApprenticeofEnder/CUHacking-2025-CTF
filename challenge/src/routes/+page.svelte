@@ -1,7 +1,15 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
-<!-- 
-Potential Apps
-- Blog
-- Pilot Database
--->
+<script lang="ts">
+    import {Button} from "$lib/components/ui/button";
+</script>
+
+<main class="w-full">
+    <h1 class="text-center">
+        IPS-N Pilot Database
+    </h1>
+
+    <div class="flex gap-4 justify-center">
+        <Button variant="link" href="/pilots">Pilots</Button>
+        <Button variant="link" href="/notices">Notices</Button>
+        <Button class="hidden" variant="link" href="/new">Add Data (TODO: Test Data Upload)</Button>
+    </div>
+</main>

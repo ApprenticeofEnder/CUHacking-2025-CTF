@@ -25,7 +25,7 @@ variable "challenge_app_name" {
   default = "challenge"
 }
 
-variable "image_registry"{
+variable "image_registry" {
   default = "ghcr.io"
 }
 

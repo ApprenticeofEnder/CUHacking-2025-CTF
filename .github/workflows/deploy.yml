@@ -32,14 +32,17 @@ jobs:
           echo "IMAGE_NAME_FULL_LC=${{ env.REGISTRY }}/$IMAGE_NAME_LC:${{ env.IMAGE_TAG }}" >> ${GITHUB_ENV}
 
       - name: Build container image
-        run: DATABASE_URL=postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@postgres:5432/pilots docker build  -t "${{ env.IMAGE_NAME_FULL_LC }}" challenge
+        env:
+          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@postgres-service:5432/pilots
+        run: |
+          docker build --secret id=DATABASE_URL \
+            -t "${{ env.IMAGE_NAME_FULL_LC }}" \
+            challenge
       
       - name: Docker Login
         run: echo ${{ secrets.CI_PAT }} | docker login ${{ env.REGISTRY }} -u ${{ github.repository_owner }} --password-stdin
 
       - name: Push image to Docker Registry
-        env:
-          IMAGE_TAG: ${{ steps.release.outputs.version }}
         run: docker push "${{ env.IMAGE_NAME_FULL_LC }}"
       
       - name: Deploy

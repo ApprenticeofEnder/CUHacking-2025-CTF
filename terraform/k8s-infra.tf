@@ -1,14 +1,25 @@
 resource "kubernetes_config_map" "postgres" {
   metadata {
-    name = "postgres-secret"
+    name = "postgres-config"
     labels = {
       app = var.postgres_app_name
     }
   }
 
   data = {
-    POSTGRES_DB       = var.postgres_db
-    POSTGRES_USER     = var.postgres_user
+    POSTGRES_DB   = var.postgres_db
+    POSTGRES_USER = var.postgres_user
+  }
+}
+
+resource "kubernetes_secret" "postgres_password" {
+  metadata {
+    name = "postgres-password"
+    labels = {
+      app = var.postgres_app_name
+    }
+  }
+  data = {
     POSTGRES_PASSWORD = var.postgres_password
   }
 }
@@ -93,6 +104,16 @@ resource "kubernetes_deployment" "postgres" {
             }
           }
 
+          env {
+            name = "POSTGRES_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.postgres_password.metadata.0.name
+                key  = "POSTGRES_PASSWORD"
+              }
+            }
+          }
+
           volume_mount {
             mount_path = "/var/lib/postgresql/data"
             name       = "postgres_data"
@@ -112,14 +133,14 @@ resource "kubernetes_deployment" "postgres" {
 
 resource "kubernetes_service" "postgres" {
   metadata {
-    name = "postgres"
+    name = "postgres-service"
     labels = {
       app = var.postgres_app_name
     }
   }
 
   spec {
-    type = "NodePort"
+    type = "LoadBalancer"
     selector = {
       app = var.postgres_app_name
     }
@@ -130,12 +151,25 @@ resource "kubernetes_service" "postgres" {
 }
 
 locals {
-  database_url = "postgres://${var.postgres_user}:${var.postgres_password}@${var.postgres_app_name}:5432/${var.postgres_db}"
+  database_url = "postgres://${var.postgres_user}:${var.postgres_password}@postgres-service:5432/${var.postgres_db}"
 }
 
 resource "kubernetes_config_map" "challenge" {
   metadata {
-    name = "challenge-secret"
+    name = "challenge-config"
+    labels = {
+      app = var.challenge_app_name
+    }
+  }
+
+  data = {
+    NODE_ENV = "dev"
+  }
+}
+
+resource "kubernetes_secret" "challenge_db_url" {
+  metadata {
+    name = "challenge-db-url"
     labels = {
       app = var.challenge_app_name
     }
@@ -143,7 +177,6 @@ resource "kubernetes_config_map" "challenge" {
 
   data = {
     DATABASE_URL = local.database_url
-    NODE_ENV     = "dev"
   }
 }
 
@@ -160,6 +193,8 @@ resource "kubernetes_deployment" "challenge" {
   }
 
   spec {
+    replicas = 3
+
     selector {
       match_labels = {
         app = var.challenge_app_name
@@ -176,25 +211,37 @@ resource "kubernetes_deployment" "challenge" {
         image_pull_secrets {
           name = "docker-registry-creds"
         }
+
         container {
-          name = "challenge"
+          name  = "challenge"
           image = local.challenge_image
           env_from {
             config_map_ref {
               name = kubernetes_config_map.challenge.metadata.0.name
             }
           }
+
+          env {
+            name = "DATABASE_URL"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.challenge_db_url.metadata.0.name
+                key  = "DATABASE_URL"
+              }
+            }
+          }
+
           resources {
             limits = {
               memory = "256Mi"
             }
             requests = {
               memory = "256Mi"
-              cpu= "100m"
+              cpu    = "100m"
             }
           }
           port {
-            name = "http"
+            name           = "http"
             container_port = var.challenge_port
           }
         }
@@ -205,17 +252,42 @@ resource "kubernetes_deployment" "challenge" {
 
 resource "kubernetes_service" "challenge" {
   metadata {
-    name = "challenge"
+    name = "challenge-service"
   }
 
   spec {
+    type = "LoadBalancer"
     selector = {
       app = var.challenge_app_name
     }
     port {
-      port = 80
+      port        = 80
       target_port = var.challenge_port
     }
   }
 }
 
+resource "kubernetes_ingress" "challenge" {
+  metadata {
+    name = "challenge-ingress"
+  }
+
+  spec {
+    backend {
+      service_name = kubernetes_service.challenge.metadata.0.name
+      service_port = kubernetes_service.challenge.spec.0.port.port
+    }
+    rule {
+      http {
+        path {
+          backend {
+            service_name = kubernetes_service.challenge.metadata.0.name
+            service_port = kubernetes_service.challenge.spec.0.port.port
+          }
+
+          path = "/*"
+        }
+      }
+    }
+  }
+}

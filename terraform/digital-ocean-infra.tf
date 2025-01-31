@@ -16,6 +16,17 @@ resource "digitalocean_kubernetes_cluster" "ctf_k8s" {
   }
 }
 
+data "digitalocean_domain" "robertbabaev_tech" {
+  name = "robertbabaev.tech"
+}
+
+resource "digitalocean_record" "cuhacking_ctf" {
+  domain = digitalocean_domain.robertbabaev_tech.id
+  type   = "A"
+  name   = "cuhacking-ctf"
+  value  = digitalocean_kubernetes_cluster.ctf_k8s.ipv4_address
+}
+
 resource "digitalocean_project" "cuhacking_ctf" {
   name        = "CUHacking 2025 CTF"
   description = "Resources for the CUHacking 2025 CTF"

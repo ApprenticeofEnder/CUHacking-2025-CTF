@@ -7,7 +7,9 @@
 	const result = $derived(data.result);
 </script>
 
-<h1>Pilots</h1>
-{#each result as pilot}
-	<PilotCard {...pilot} />
-{/each}
+<div class="flex flex-col gap-4">
+	<h1>Pilots</h1>
+	{#each result as pilot}
+		<PilotCard {...pilot} />
+	{/each}
+</div>

@@ -7,6 +7,8 @@
 <div class="flex justify-center">
 	<div class="w-full max-w-screen-lg h-full flex flex-col gap-4 overflow-x-clip">
 		<Navbar></Navbar>
-		{@render children()}
+		<div class="container">
+			{@render children()}
+		</div>
 	</div>
 </div>

@@ -261,7 +261,7 @@ resource "kubernetes_service" "challenge" {
       app = var.challenge_app_name
     }
     port {
-      port        = 80
+      port        = var.challenge_port
       target_port = var.challenge_port
     }
   }

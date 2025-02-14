@@ -6,9 +6,9 @@
 </script>
 
 <h1>Notices</h1>
-{#each result as notice }
-	<div class="p-4 border-2 border-primary">
+{#each result as notice}
+	<div class="border-2 border-primary p-4">
 		<h2 class="flex justify-between">{notice.title} {notice.author}</h2>
-        <p>{notice.note}</p>
+		<p>{notice.note}</p>
 	</div>
 {/each}

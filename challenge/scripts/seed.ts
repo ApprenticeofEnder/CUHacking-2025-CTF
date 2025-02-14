@@ -25,5 +25,5 @@ async function main() {
 
 main().then(() => {
 	console.log('Seed complete.');
-    process.exit(0);
+	process.exit(0);
 });

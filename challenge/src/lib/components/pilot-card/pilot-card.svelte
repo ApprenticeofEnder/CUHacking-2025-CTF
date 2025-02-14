@@ -8,9 +8,14 @@
 	const visibilityStatus = $derived(classified ? 'CLASSIFIED' : 'PUBLIC');
 </script>
 
-<Card onclick={() => {goto(`/pilots/${id}`)}} class="hover:cursor-pointer">
+<Card
+	onclick={() => {
+		goto(`/pilots/${id}`);
+	}}
+	class="hover:cursor-pointer"
+>
 	<CardHeader>
-        <CardTitle>{name}</CardTitle>
+		<CardTitle>{name}</CardTitle>
 		<h3>Callsign: {callsign}</h3>
 	</CardHeader>
 	<CardContent>

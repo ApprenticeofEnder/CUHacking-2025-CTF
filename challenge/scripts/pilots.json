@@ -174,11 +174,11 @@
 		"notes": "Allegiance: IPS-N (Loyal). Mech: Nelson, equipped with experimental environmental shielding. Risk: Untested tech may fail in critical situations.",
 		"classified": true
 	},
-    {
-        "name": "VE8gVEhFIFdBVENIRlVMCg==",
-        "callsign": "V0UgU0FMVVRFIFlPVQo=",
-        "biography": "OMNISEC forgot to turn on the classified checks. Watch out for robots. FLAG{2fb5891fb693c842bbb8fb8e6d10ac78}",
-        "notes": "Secrets are hidden in the sacred txts.",
-        "classified": true
-    }
+	{
+		"name": "VE8gVEhFIFdBVENIRlVMCg==",
+		"callsign": "V0UgU0FMVVRFIFlPVQo=",
+		"biography": "OMNISEC forgot to turn on the classified checks. Watch out for robots. FLAG{2fb5891fb693c842bbb8fb8e6d10ac78}",
+		"notes": "Secrets are hidden in the sacred txts.",
+		"classified": true
+	}
 ]

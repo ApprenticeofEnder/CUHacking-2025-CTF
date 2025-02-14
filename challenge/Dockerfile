@@ -16,6 +16,7 @@ RUN --mount=type=secret,id=DATABASE_URL \
     pnpm run build
 
 FROM base AS final
+COPY --from=prod /app/secret_data /app/secret_data
 COPY --from=prod /app/node_modules /app/node_modules
 COPY --from=prod /app/.svelte-kit /app/.svelte-kit
 COPY --from=prod \
@@ -26,4 +27,5 @@ COPY --from=prod \
     /app/vite.config.ts \
     /app/
 EXPOSE 3000
+
 ENTRYPOINT [ "./entrypoint.sh" ]

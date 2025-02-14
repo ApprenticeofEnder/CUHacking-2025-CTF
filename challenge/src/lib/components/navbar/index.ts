@@ -1,6 +1,3 @@
-import Root from "./navbar.svelte";
+import Root from './navbar.svelte';
 
-export {
-    Root,
-    Root as Navbar
-}
+export { Root, Root as Navbar };

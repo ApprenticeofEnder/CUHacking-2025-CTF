@@ -14,4 +14,4 @@ export const notices = pgTable('notices', {
 	title: text('title').notNull(),
 	note: text('note').notNull(),
 	author: text('author').notNull()
-})
+});

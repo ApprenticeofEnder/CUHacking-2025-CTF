@@ -1,68 +1,68 @@
 {
-  "id": "ab364e5a-dc77-4e2b-acf2-9c5a92e63e61",
-  "prevId": "086ae772-c8c4-4a53-ac8a-3b0af5a35ee2",
-  "version": "7",
-  "dialect": "postgresql",
-  "tables": {
-    "public.pilots": {
-      "name": "pilots",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "callsign": {
-          "name": "callsign",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "biography": {
-          "name": "biography",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "notes": {
-          "name": "notes",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "classified": {
-          "name": "classified",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    }
-  },
-  "enums": {},
-  "schemas": {},
-  "sequences": {},
-  "roles": {},
-  "policies": {},
-  "views": {},
-  "_meta": {
-    "columns": {},
-    "schemas": {},
-    "tables": {}
-  }
+	"id": "ab364e5a-dc77-4e2b-acf2-9c5a92e63e61",
+	"prevId": "086ae772-c8c4-4a53-ac8a-3b0af5a35ee2",
+	"version": "7",
+	"dialect": "postgresql",
+	"tables": {
+		"public.pilots": {
+			"name": "pilots",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"name": {
+					"name": "name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"callsign": {
+					"name": "callsign",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"biography": {
+					"name": "biography",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"notes": {
+					"name": "notes",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"classified": {
+					"name": "classified",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		}
+	},
+	"enums": {},
+	"schemas": {},
+	"sequences": {},
+	"roles": {},
+	"policies": {},
+	"views": {},
+	"_meta": {
+		"columns": {},
+		"schemas": {},
+		"tables": {}
+	}
 }

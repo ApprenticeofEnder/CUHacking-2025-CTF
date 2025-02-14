@@ -21,7 +21,7 @@ data "digitalocean_domain" "robertbabaev_tech" {
 }
 
 resource "digitalocean_record" "cuhacking_ctf" {
-  domain = digitalocean_domain.robertbabaev_tech.id
+  domain = data.digitalocean_domain.robertbabaev_tech.id
   type   = "A"
   name   = "cuhacking-ctf"
   value  = digitalocean_kubernetes_cluster.ctf_k8s.ipv4_address

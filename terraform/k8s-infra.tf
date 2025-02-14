@@ -275,14 +275,14 @@ resource "kubernetes_ingress" "challenge" {
   spec {
     backend {
       service_name = kubernetes_service.challenge.metadata.0.name
-      service_port = kubernetes_service.challenge.spec.0.port.port
+      service_port = kubernetes_service.challenge.spec.0.port.0.port
     }
     rule {
       http {
         path {
           backend {
             service_name = kubernetes_service.challenge.metadata.0.name
-            service_port = kubernetes_service.challenge.spec.0.port.port
+            service_port = kubernetes_service.challenge.spec.0.port.0.port
           }
 
           path = "/*"

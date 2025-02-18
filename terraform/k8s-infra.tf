@@ -1,3 +1,20 @@
+resource "kubernetes_secret" "postgres_secret" {
+  metadata {
+    name      = "postgres-secret"
+    labels = {
+      app = var.postgres_app_name
+    }
+  }
+
+  data = {
+    # Yes this is bad practice but this isn't super high-risk activity
+    superUserPassword       = var.postgres_password
+    replicationUserPassword = var.postgres_password
+  }
+
+  type = "Opaque"
+}
+
 resource "kubernetes_config_map" "postgres" {
   metadata {
     name = "postgres-config"
@@ -8,150 +25,13 @@ resource "kubernetes_config_map" "postgres" {
 
   data = {
     POSTGRES_DB   = var.postgres_db
-    POSTGRES_USER = var.postgres_user
   }
 }
 
-resource "kubernetes_secret" "postgres_password" {
-  metadata {
-    name = "postgres-password"
-    labels = {
-      app = var.postgres_app_name
-    }
-  }
-  data = {
-    POSTGRES_PASSWORD = var.postgres_password
-  }
-}
-
-resource "kubernetes_persistent_volume" "postgres" {
-  metadata {
-    name = "postgres-volume"
-    labels = {
-      type = "local"
-      app  = var.postgres_app_name
-    }
-  }
-  spec {
-    capacity = {
-      storage = "${var.postgres_capacity}"
-    }
-    access_modes = ["ReadWriteMany"]
-    persistent_volume_source {
-      vsphere_volume {
-        volume_path = "/data/postgresql"
-      }
-    }
-  }
-}
-
-resource "kubernetes_persistent_volume_claim" "postgres" {
-  metadata {
-    name = "postgres-volume-claim"
-    labels = {
-      app = var.postgres_app_name
-    }
-  }
-  spec {
-    access_modes = ["ReadWriteMany"]
-    resources {
-      requests = {
-        storage = "${var.postgres_capacity}"
-      }
-    }
-    volume_name = kubernetes_persistent_volume.postgres.metadata.0.name
-  }
-}
-
-resource "kubernetes_deployment" "postgres" {
-  metadata {
-    name = "postgres"
-    labels = {
-      app = var.postgres_app_name
-    }
-  }
-
-  spec {
-    replicas = 3
-
-    selector {
-      match_labels = {
-        app = var.postgres_app_name
-      }
-    }
-
-    template {
-      metadata {
-        labels = {
-          app = var.postgres_app_name
-        }
-      }
-
-      spec {
-        container {
-          image = "postgres:17"
-          name  = "db"
-
-          image_pull_policy = "IfNotPresent"
-
-          port {
-            container_port = 5432
-          }
-
-          env_from {
-            config_map_ref {
-              name = kubernetes_config_map.postgres.metadata.0.name
-            }
-          }
-
-          env {
-            name = "POSTGRES_PASSWORD"
-            value_from {
-              secret_key_ref {
-                name = kubernetes_secret.postgres_password.metadata.0.name
-                key  = "POSTGRES_PASSWORD"
-              }
-            }
-          }
-
-          volume_mount {
-            mount_path = "/var/lib/postgresql/data"
-            name       = "postgres_data"
-          }
-        }
-
-        volume {
-          name = "postgres_data"
-          persistent_volume_claim {
-            claim_name = kubernetes_persistent_volume_claim.postgres.metadata.0.name
-          }
-        }
-      }
-    }
-  }
-}
-
-resource "kubernetes_service" "postgres" {
-  metadata {
-    name = "postgres-service"
-    labels = {
-      app = var.postgres_app_name
-    }
-  }
-
-  spec {
-    type = "LoadBalancer"
-    selector = {
-      app = var.postgres_app_name
-    }
-    port {
-      port = 5432
-    }
-  }
-}
+# TODO: Migrate all of this to using Kubegres
 
 locals {
-  database_url = "postgres://${var.postgres_user}:${var.postgres_password}@postgres-service:5432/${var.postgres_db}"
+  database_url = "postgres://${var.postgres_user}:${var.postgres_password}@postgres:5432/${var.postgres_db}"
 }
 
 resource "kubernetes_config_map" "challenge" {
@@ -178,6 +58,8 @@ resource "kubernetes_secret" "challenge_db_url" {
   data = {
     DATABASE_URL = local.database_url
   }
+
+  type = "Opaque"
 }
 
 locals {

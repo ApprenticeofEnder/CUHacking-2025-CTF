@@ -8,8 +8,8 @@ resource "digitalocean_kubernetes_cluster" "ctf_k8s" {
   version = data.digitalocean_kubernetes_versions.list.latest_version
 
   node_pool {
-    name       = "default-np"
-    size       = "s-1vcpu-2gb"
+    name       = "cuhacking-ctf-np"
+    size       = "s-2vcpu-2gb"
     auto_scale = true
     min_nodes  = 2
     max_nodes  = 3
@@ -24,7 +24,7 @@ resource "digitalocean_record" "cuhacking_ctf" {
   domain = data.digitalocean_domain.robertbabaev_tech.id
   type   = "A"
   name   = "cuhacking-ctf"
-  value  = digitalocean_kubernetes_cluster.ctf_k8s.ipv4_address
+  value  = "${digitalocean_kubernetes_cluster.ctf_k8s.ipv4_address}"
 }
 
 resource "digitalocean_project" "cuhacking_ctf" {

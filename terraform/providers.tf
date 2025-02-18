@@ -4,7 +4,19 @@ terraform {
       source  = "digitalocean/digitalocean"
       version = "~> 2.0"
     }
+
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.35.1"
+    }
+
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = "1.19.0"
+    }
   }
+
+
   backend "s3" {
     endpoint                    = "https://tor1.digitaloceanspaces.com"
     region                      = "us-west-1" # Just a placeholder, not used
@@ -24,4 +36,13 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(
     digitalocean_kubernetes_cluster.ctf_k8s.kube_config[0].cluster_ca_certificate
   )
+}
+
+provider "kubectl" {
+  host  = digitalocean_kubernetes_cluster.ctf_k8s.endpoint
+  token = digitalocean_kubernetes_cluster.ctf_k8s.kube_config[0].token
+  cluster_ca_certificate = base64decode(
+    digitalocean_kubernetes_cluster.ctf_k8s.kube_config[0].cluster_ca_certificate
+  )
+  load_config_file = false
 }

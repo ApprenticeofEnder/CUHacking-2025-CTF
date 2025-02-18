@@ -1,3 +1,12 @@
+data "kubectl_path_documents" "docs" {
+  pattern = "./k8s_manifests/*.yaml"
+}
+
+resource "kubectl_manifest" "kubegres" {
+  for_each  = toset(data.kubectl_path_documents.docs.documents)
+  yaml_body = each.value
+}
+
 resource "kubernetes_secret" "postgres_secret" {
   metadata {
     name      = "postgres-secret"

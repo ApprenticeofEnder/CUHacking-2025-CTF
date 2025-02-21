@@ -1,5 +1,5 @@
 data "kubectl_path_documents" "docs" {
-  pattern = "./k8s_manifests/*.yaml"
+  pattern = "${path.module}/k8s_manifests/*.yaml"
 }
 
 resource "kubectl_manifest" "kubegres" {

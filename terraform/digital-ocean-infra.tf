@@ -20,6 +20,10 @@ data "digitalocean_domain" "robertbabaev_tech" {
   name = "robertbabaev.tech"
 }
 
+output "cluster_ip" {
+   value = digitalocean_kubernetes_cluster.ctf_k8s.ipv4_address 
+}
+
 resource "digitalocean_record" "cuhacking_ctf" {
   domain = data.digitalocean_domain.robertbabaev_tech.id
   type   = "A"

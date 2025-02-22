@@ -1,3 +1,16 @@
+resource "time_sleep" "wait_manager" {
+  depends_on = [digitalocean_droplet.manager]
+
+  create_duration = "30s"
+}
+
+resource "time_sleep" "wait_workers" {
+  depends_on = [digitalocean_droplet.workers.*]
+
+  create_duration = "30s"
+}
+
+
 resource "ansible_group" "manager" {
   name     = "manager"
   children = [digitalocean_droplet.manager.ipv4_address]
@@ -5,7 +18,7 @@ resource "ansible_group" "manager" {
     ansible_user                 = var.ansible_ssh_user
     ansible_ssh_private_key_file = var.ansible_ssh_private_key_file
   }
-  depends_on = [time_sleep.wait_20_seconds]
+  depends_on = [time_sleep.wait_manager]
 }
 
 resource "ansible_group" "worker" {
@@ -15,7 +28,7 @@ resource "ansible_group" "worker" {
     ansible_user                 = var.ansible_ssh_user
     ansible_ssh_private_key_file = var.ansible_ssh_private_key_file
   }
-  depends_on = [time_sleep.wait_20_seconds]
+  depends_on = [time_sleep.wait_workers]
 }
 
 resource "terraform_data" "ansible_inventory" {

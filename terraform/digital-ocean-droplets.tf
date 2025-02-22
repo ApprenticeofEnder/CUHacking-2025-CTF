@@ -20,8 +20,8 @@ resource "digitalocean_droplet" "workers" {
 }
 
 locals {
-  droplet_ids  = concat([digitalocean_droplet.leader.id], [for s in digitalocean_droplet.workers.*.id : s])
-  droplet_urns = concat([digitalocean_droplet.leader.urn], [for s in digitalocean_droplet.workers.*.urn : s])
+  droplet_ids  = concat([digitalocean_droplet.manager.id], [for s in digitalocean_droplet.workers.*.id : s])
+  droplet_urns = concat([digitalocean_droplet.manager.urn], [for s in digitalocean_droplet.workers.*.urn : s])
 }
 
 resource "digitalocean_firewall" "ctf" {

@@ -105,7 +105,7 @@ resource "digitalocean_project" "cuhacking_ctf" {
   description = "Resources for the CUHacking 2025 CTF"
   purpose     = "Other"
   environment = "Development"
-  resources   = concat(local.droplet_urns, [digitalocean_firewall.ctf.urn])
+  resources   = concat(local.droplet_urns)
 }
 
 

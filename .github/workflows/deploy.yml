@@ -59,10 +59,9 @@ jobs:
 
       - name: Setup SSH keys
         env:
-          - SSH_PRIVATE_KEY_FILE: "~/.ssh/cuhacking_2025_ed25519"
+          - SSH_PRIVATE_KEY_FILE: ${{ env.SSH_PRIVATE_KEY_FILE }}
         run: |
           mkdir -p ~/.ssh
-          echo "SSH_PRIVATE_KEY_FILE=$SSH_PRIVATE_KEY_FILE" >> ${GITHUB_ENV}
           echo ${{ secrets.SSH_PRIVATE_KEY }} > $SSH_PRIVATE_KEY_FILE 
           chmod 600 $SSH_PRIVATE_KEY_FILE
 

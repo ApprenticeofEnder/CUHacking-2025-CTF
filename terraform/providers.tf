@@ -38,4 +38,12 @@ provider "docker" {
   }
 
   host = "ssh://root@${digitalocean_droplet.manager}:22"
+  ssh_opts = [
+    "-o", 
+    "StrictHostKeyChecking=no", 
+    "-o", 
+    "UserKnownHostsFile=/dev/null", 
+    "-i", 
+    var.ansible_ssh_private_key_file
+  ]
 }

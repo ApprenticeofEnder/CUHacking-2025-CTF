@@ -21,17 +21,12 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@main
 
-      - name: Setup SSH keys
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_PRIVATE_KEY_FILE: ${{ vars.SSH_PRIVATE_KEY_FILE }}
-        run: |
-          env
-          pwd
-          mkdir -p ~/.ssh
-          ls ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > $SSH_PRIVATE_KEY_FILE
-          chmod 600 $SSH_PRIVATE_KEY_FILE
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: "just-a-placeholder-so-we-dont-get-errors"
+          name: "cuhacking_2025_ed25519"
 
       - name: Setup Ansible
         run: |
@@ -73,7 +68,7 @@ jobs:
           # For some reason DO spaces uses an AWS prefix????????
           AWS_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
-          TF_VAR_ansible_ssh_private_key_file: ${{ env.SSH_PRIVATE_KEY_FILE }}
+          TF_VAR_ansible_ssh_private_key_file: ${{ vars.SSH_PRIVATE_KEY_FILE }}
           TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
           TF_VAR_image_registry: ${{ env.REGISTRY }}
           TF_VAR_challenge_image_name: ${{ env.IMAGE_NAME_LC }}

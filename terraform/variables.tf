@@ -29,8 +29,18 @@ variable "image_registry" {
   default = "ghcr.io"
 }
 
+variable "image_registry_username" {
+  type      = string
+  sensitive = true
+}
+
+variable "image_registry_password" {
+  type      = string
+  sensitive = true
+}
+
 variable "challenge_image_name" {
-  default = "ApprenticeofEnder/CUHacking-2025-CTF"
+  default = "apprenticeofender/cuhacking-2025-ctf"
 }
 
 variable "challenge_image_tag" {
@@ -40,3 +50,14 @@ variable "challenge_image_tag" {
 variable "challenge_port" {
   default = 3000
 }
+
+# Ansible Variables
+variable "ansible_ssh_user" {
+  type    = string
+  default = "root"
+}
+
+variable "ansible_ssh_private_key_file" {
+  type = string
+}
+

@@ -12,9 +12,10 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   TERRAFORM_DIR: terraform
+  DB_NAME: pilots
 
 jobs:
-  deploy:
+  build-image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
@@ -32,38 +33,60 @@ jobs:
         run: |
           IMAGE_NAME_LC="${IMAGE_NAME,,}"
           echo "IMAGE_NAME_LC=$IMAGE_NAME_LC" >> ${GITHUB_ENV}
+          echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> ${GITHUB_ENV}
           echo "IMAGE_NAME_FULL_LC=${{ env.REGISTRY }}/$IMAGE_NAME_LC:${{ env.IMAGE_TAG }}" >> ${GITHUB_ENV}
 
       - name: Build container image
         env:
-          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@postgres-service:5432/pilots
+          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@postgres:5432/${{ env.DB_NAME }}
         run: |
           docker build --secret id=DATABASE_URL \
             -t "${{ env.IMAGE_NAME_FULL_LC }}" \
             challenge
-      
+
       - name: Docker Login
         run: echo ${{ secrets.CI_PAT }} | docker login ${{ env.REGISTRY }} -u ${{ github.repository_owner }} --password-stdin
 
       - name: Push image to Docker Registry
         run: docker push "${{ env.IMAGE_NAME_FULL_LC }}"
-      
+
+  deploy:
+    needs: build-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@main
+
+      - name: Setup SSH keys
+        run: |
+          mkdir -p ~/.ssh
+          echo "SSH_PRIVATE_KEY_FILE=~/.ssh/cuhacking_2025_ed25519" >> ${GITHUB_ENV}
+          echo ${{ secrets.SSH_PRIVATE_KEY }} > ${{ env.SSH_PRIVATE_KEY_FILE }} 
+          chmod 600 ${{ env.SSH_PRIVATE_KEY_FILE }}
+
+      - name: Setup Ansible
+        run: |
+          python3 -m pip install --user ansible
+          ansible-galaxy collection install -r $TERRAFORM_DIR/requirements.yml
+
       - name: Deploy
         env:
           DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
           # For some reason DO spaces uses an AWS prefix????????
           AWS_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
+          TF_VAR_ansible_ssh_private_key_file: ${{ env.SSH_PRIVATE_KEY_FILE }}
           TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
           TF_VAR_image_registry: ${{ env.REGISTRY }}
           TF_VAR_challenge_image_name: ${{ env.IMAGE_NAME_LC }}
-          TF_VAR_challenge_image_tag: ${{ steps.release.outputs.version }}
+          TF_VAR_challenge_image_tag: ${{ env.IMAGE_TAG }}
         run: |
           # install opentofu
           scripts/install-opentofu.sh --install-method deb
           tofu -version
           # apply infra changes
-          tofu -chdir=$TERRAFORM_DIR init
-          tofu -chdir=$TERRAFORM_DIR validate
-          tofu -chdir=$TERRAFORM_DIR plan -out .terraform-plan
-          tofu -chdir=$TERRAFORM_DIR apply .terraform-plan
+          cd $TERRAFORM_DIR
+          tofu init
+          tofu validate
+          tofu plan -out .terraform-plan
+          tofu apply .terraform-plan

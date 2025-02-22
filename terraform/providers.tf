@@ -5,14 +5,14 @@ terraform {
       version = "~> 2.0"
     }
 
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.35.1"
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "3.0.2"
     }
 
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = "1.19.0"
+    ansible = {
+      version = "~> 1.3.0"
+      source  = "ansible/ansible"
     }
   }
 
@@ -30,19 +30,12 @@ terraform {
   }
 }
 
-provider "kubernetes" {
-  host  = digitalocean_kubernetes_cluster.ctf_k8s.endpoint
-  token = digitalocean_kubernetes_cluster.ctf_k8s.kube_config[0].token
-  cluster_ca_certificate = base64decode(
-    digitalocean_kubernetes_cluster.ctf_k8s.kube_config[0].cluster_ca_certificate
-  )
-}
+provider "docker" {
+  registry_auth {
+    registry = var.image_registry
+    username = var.image_registry_username
+    password = var.image_registry_password
+  }
 
-provider "kubectl" {
-  host  = digitalocean_kubernetes_cluster.ctf_k8s.endpoint
-  token = digitalocean_kubernetes_cluster.ctf_k8s.kube_config[0].token
-  cluster_ca_certificate = base64decode(
-    digitalocean_kubernetes_cluster.ctf_k8s.kube_config[0].cluster_ca_certificate
-  )
-  load_config_file = false
+  host = "ssh://root@${digitalocean_droplet.manager}:22"
 }

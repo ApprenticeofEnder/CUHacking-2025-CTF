@@ -24,7 +24,7 @@ jobs:
       - name: Setup SSH keys
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_PRIVATE_KEY_FILE: ${{ env.SSH_PRIVATE_KEY_FILE }}
+          SSH_PRIVATE_KEY_FILE: ${{ vars.SSH_PRIVATE_KEY_FILE }}
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > $SSH_PRIVATE_KEY_FILE

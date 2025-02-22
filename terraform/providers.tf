@@ -32,7 +32,7 @@ terraform {
 
 provider "docker" {
   registry_auth {
-    registry = var.image_registry
+    address = var.image_registry
     username = var.image_registry_username
     password = var.image_registry_password
   }

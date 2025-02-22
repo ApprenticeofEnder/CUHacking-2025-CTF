@@ -33,6 +33,23 @@ jobs:
           python3 -m pip install --user ansible
           ansible-galaxy collection install -r $TERRAFORM_DIR/requirements.yml
 
+      - name: Setup Terraform
+        env:
+          DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          # For some reason DO spaces uses an AWS prefix????????
+          AWS_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
+          TF_VAR_ansible_ssh_private_key_file: ${{ vars.SSH_PRIVATE_KEY_FILE }}
+          TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
+          TF_VAR_image_registry: ${{ env.REGISTRY }}
+        run: |
+          # install opentofu
+          scripts/install-opentofu.sh --install-method deb
+          tofu -version
+          cd $TERRAFORM_DIR
+          tofu init
+          tofu validate
+
       - name: Set version
         id: release
         run: echo ::set-output name=version::$(git describe --always)
@@ -74,12 +91,8 @@ jobs:
           TF_VAR_challenge_image_name: ${{ env.IMAGE_NAME_LC }}
           TF_VAR_challenge_image_tag: ${{ env.IMAGE_TAG }}
         run: |
-          # install opentofu
-          scripts/install-opentofu.sh --install-method deb
-          tofu -version
+          ofu -version
           # apply infra changes
           cd $TERRAFORM_DIR
-          tofu init
-          tofu validate
           tofu plan -out .terraform-plan
           tofu apply .terraform-plan

@@ -58,8 +58,6 @@ jobs:
         uses: actions/checkout@main
 
       - name: Setup SSH keys
-        env:
-          - SSH_PRIVATE_KEY_FILE:
         run: |
           mkdir -p ~/.ssh
           echo ${{ secrets.SSH_PRIVATE_KEY }} > ${{ env.SSH_PRIVATE_KEY_FILE }}

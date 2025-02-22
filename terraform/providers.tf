@@ -32,18 +32,18 @@ terraform {
 
 provider "docker" {
   registry_auth {
-    address = var.image_registry
+    address  = var.image_registry
     username = var.image_registry_username
     password = var.image_registry_password
   }
 
   host = "ssh://root@${digitalocean_droplet.manager}:22"
   ssh_opts = [
-    "-o", 
-    "StrictHostKeyChecking=no", 
-    "-o", 
-    "UserKnownHostsFile=/dev/null", 
-    "-i", 
+    "-o",
+    "StrictHostKeyChecking=no",
+    "-o",
+    "UserKnownHostsFile=/dev/null",
+    "-i",
     var.ansible_ssh_private_key_file
   ]
 }

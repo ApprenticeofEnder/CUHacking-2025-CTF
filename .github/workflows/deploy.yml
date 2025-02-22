@@ -15,11 +15,26 @@ env:
   DB_NAME: pilots
 
 jobs:
-  build-image:
+  deploy:
+    needs: build-image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
         uses: actions/checkout@main
+
+      - name: Setup SSH keys
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_PRIVATE_KEY_FILE: ${{ env.SSH_PRIVATE_KEY_FILE }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > $SSH_PRIVATE_KEY_FILE
+          chmod 600 $SSH_PRIVATE_KEY_FILE
+
+      - name: Setup Ansible
+        run: |
+          python3 -m pip install --user ansible
+          ansible-galaxy collection install -r $TERRAFORM_DIR/requirements.yml
 
       - name: Set version
         id: release
@@ -49,27 +64,6 @@ jobs:
 
       - name: Push image to Docker Registry
         run: docker push "${{ env.IMAGE_NAME_FULL_LC }}"
-
-  deploy:
-    needs: build-image
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout main
-        uses: actions/checkout@main
-
-      - name: Setup SSH keys
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_PRIVATE_KEY_FILE:
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > $SSH_PRIVATE_KEY_FILE
-          chmod 600 $SSH_PRIVATE_KEY_FILE
-
-      - name: Setup Ansible
-        run: |
-          python3 -m pip install --user ansible
-          ansible-galaxy collection install -r $TERRAFORM_DIR/requirements.yml
 
       - name: Deploy
         env:

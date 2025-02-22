@@ -27,6 +27,7 @@ jobs:
           SSH_PRIVATE_KEY_FILE: ${{ vars.SSH_PRIVATE_KEY_FILE }}
         run: |
           mkdir -p ~/.ssh
+          ls ~/.ssh
           echo "$SSH_PRIVATE_KEY" > $SSH_PRIVATE_KEY_FILE
           chmod 600 $SSH_PRIVATE_KEY_FILE
 

@@ -59,11 +59,11 @@ jobs:
 
       - name: Setup SSH keys
         env:
-          - SSH_PRIVATE_KEY_FILE: ${{ env.SSH_PRIVATE_KEY_FILE }}
+          - SSH_PRIVATE_KEY_FILE:
         run: |
           mkdir -p ~/.ssh
-          echo ${{ secrets.SSH_PRIVATE_KEY }} > $SSH_PRIVATE_KEY_FILE 
-          chmod 600 $SSH_PRIVATE_KEY_FILE
+          echo ${{ secrets.SSH_PRIVATE_KEY }} > ${{ env.SSH_PRIVATE_KEY_FILE }}
+          chmod 600 ${{ env.SSH_PRIVATE_KEY_FILE }}
 
       - name: Setup Ansible
         run: |

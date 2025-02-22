@@ -5,7 +5,7 @@ resource "time_sleep" "wait_manager" {
 }
 
 resource "time_sleep" "wait_workers" {
-  depends_on = [for s in digitalocean_droplet.workers.* : s]
+  depends_on = [digitalocean_droplet.workers.0]
 
   create_duration = "30s"
 }

@@ -7,7 +7,7 @@ resource "digitalocean_droplet" "manager" {
   size     = "s-1vcpu-2gb"
   image    = "ubuntu-22-04-x64"
   region   = "tor1"
-  ssh_keys = [digitalocean_ssh_key.cuhacking.id]
+  ssh_keys = [data.digitalocean_ssh_key.cuhacking.id]
 }
 
 resource "digitalocean_droplet" "workers" {
@@ -16,7 +16,7 @@ resource "digitalocean_droplet" "workers" {
   size     = "s-1vcpu-2gb"
   image    = "ubuntu-22-04-x64"
   region   = "tor1"
-  ssh_keys = [digitalocean_ssh_key.cuhacking.id]
+  ssh_keys = [data.digitalocean_ssh_key.cuhacking.id]
 }
 
 locals {

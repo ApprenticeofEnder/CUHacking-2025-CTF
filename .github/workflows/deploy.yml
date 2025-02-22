@@ -91,7 +91,6 @@ jobs:
           TF_VAR_challenge_image_name: ${{ env.IMAGE_NAME_LC }}
           TF_VAR_challenge_image_tag: ${{ env.IMAGE_TAG }}
         run: |
-          ofu -version
           # apply infra changes
           cd $TERRAFORM_DIR
           tofu plan -out .terraform-plan

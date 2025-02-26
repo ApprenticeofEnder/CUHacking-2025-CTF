@@ -89,7 +89,7 @@ jobs:
           TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
           TF_VAR_image_registry: ${{ env.REGISTRY }}
           TF_VAR_image_registry_username: ${{ github.repository_owner }}
-          TF_VAR_image_regustry_password: ${{ secrets.CI_PAT }}
+          TF_VAR_image_registry_password: ${{ secrets.CI_PAT }}
           TF_VAR_challenge_image_name: ${{ env.IMAGE_NAME_LC }}
           TF_VAR_challenge_image_tag: ${{ env.IMAGE_TAG }}
         run: |

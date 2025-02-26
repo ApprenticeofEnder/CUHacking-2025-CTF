@@ -23,7 +23,7 @@ resource "ansible_group" "manager" {
 
 resource "ansible_group" "worker" {
   name     = "worker"
-  children = [digitalocean_droplet.workers.*.ipv4_address]
+  children = [for s in digitalocean_droplet.workers.*.ipv4_address : s]
   variables = {
     ansible_user                 = var.ansible_ssh_user
     ansible_ssh_private_key_file = var.ansible_ssh_private_key_file

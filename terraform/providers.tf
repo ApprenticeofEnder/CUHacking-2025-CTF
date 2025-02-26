@@ -46,4 +46,6 @@ provider "docker" {
     "-i",
     var.ansible_ssh_private_key_file
   ]
+
+  depends_on = [time_sleep.wait_manager]
 }

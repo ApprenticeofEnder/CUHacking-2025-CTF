@@ -1,0 +1,38 @@
+---
+- hosts: manager
+  become: true
+  vars:
+    postgres_password: "postgres"
+    postgres_db: "pilots"
+    # uncomment this when ready
+    # challenge_image: "ghcr.io/apprenticeofender/cuhacking-2025-ctf:latest"
+    image_registry_username: ""
+    image_registry_password: ""
+  tasks:
+    - name: log in to container registry
+      community.docker.docker_login:
+        registry_url: "ghcr.io"
+        username: "{{ image_registry_username }}"
+        password: "{{ image_registry_password }}"
+
+    - name: create network
+      community.docker.docker_network:
+        name: challenge_network
+
+    - name: create postgres volume
+      community.docker.docker_volume:
+        name: postgres_volume
+
+    - name: create postgres service
+      community.docker.docker_swarm_service:
+        name: postgres
+        image: "postgres:17"
+        networks:
+          - challenge_network
+        mounts:
+          - source: postgres_volume
+            target: "/var/lib/postgresql/data"
+            type: volume
+        env:
+          POSTGRES_PASSWORD: "{{ postgres_password }}"
+          POSTGRES_DB: "{{ postgres_db }}"

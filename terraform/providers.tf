@@ -37,7 +37,7 @@ provider "docker" {
     password = var.image_registry_password
   }
 
-  host = "ssh://root@${digitalocean_droplet.manager}:22"
+  host = "ssh://root@${digitalocean_droplet.manager.ipv4_address}:22"
   ssh_opts = [
     "-o",
     "StrictHostKeyChecking=no",

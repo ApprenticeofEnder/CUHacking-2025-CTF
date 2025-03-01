@@ -33,10 +33,6 @@ jobs:
           python3 -m pip install --user ansible
           ansible-galaxy collection install -r $TERRAFORM_DIR/requirements.yml
 
-      - name: Setup jq
-        run: |
-          sudo apt-get update && sudo apt-get install jq
-
       - name: Setup Terraform
         env:
           DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}

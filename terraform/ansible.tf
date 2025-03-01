@@ -10,7 +10,6 @@ resource "time_sleep" "wait_workers" {
   create_duration = "30s"
 }
 
-
 resource "ansible_group" "manager" {
   name     = "manager"
   children = [digitalocean_droplet.manager.ipv4_address]
@@ -31,38 +30,29 @@ resource "ansible_group" "worker" {
   depends_on = [time_sleep.wait_workers]
 }
 
-resource "terraform_data" "ansible_inventory" {
-  provisioner "local-exec" {
-    command = "ansible-inventory -i inventory.yml --graph --vars"
-  }
-  depends_on = [ansible_group.manager, ansible_group.worker]
+resource "ansible_playbook" "docker_playbook" {
+  name = "all"
+  playbook = "playbooks/docker.yml"
 }
 
-resource "terraform_data" "docker_playbook" {
-  provisioner "local-exec" {
-    command = "ansible-playbook -i inventory.yml playbooks/docker.yml"
-  }
-  depends_on = [terraform_data.ansible_inventory]
-}
-
-resource "terraform_data" "swarm_playbook" {
-  provisioner "local-exec" {
-    command = "ansible-playbook -i inventory.yml playbooks/swarm.yml"
-  }
-  depends_on = [terraform_data.docker_playbook]
-}
-
-locals {
-  deploy_vars_json = jsonencode({
-    image_registry_username = var.image_registry_username
-    image_registry_password = var.image_registry_password
-    postgres_password = var.postgres_password
-  })
-}
-
-resource "terraform_data" "deploy_playbook" {
-  provisioner "local-exec" {
-    command = "ansible-playbook -i inventory.yml playbooks/deploy.yml --extra-vars '${local.deploy_vars_json}'"
-  }
-  depends_on = [terraform_data.docker_playbook]
-}
+# resource "terraform_data" "swarm_playbook" {
+#   provisioner "local-exec" {
+#     command = "ansible-playbook -i inventory.yml playbooks/swarm.yml"
+#   }
+#   depends_on = [terraform_data.docker_playbook]
+# }
+#
+# locals {
+#   deploy_vars_json = jsonencode({
+#     image_registry_username = var.image_registry_username
+#     image_registry_password = var.image_registry_password
+#     postgres_password = var.postgres_password
+#   })
+# }
+#
+# resource "terraform_data" "deploy_playbook" {
+#   provisioner "local-exec" {
+#     command = "ansible-playbook -i inventory.yml playbooks/deploy.yml --extra-vars '${local.deploy_vars_json}'"
+#   }
+#   depends_on = [terraform_data.docker_playbook]
+# }

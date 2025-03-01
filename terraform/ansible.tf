@@ -33,6 +33,7 @@ resource "ansible_group" "worker" {
 resource "ansible_playbook" "docker_playbook" {
   name = "all"
   playbook = "playbooks/docker.yml"
+  depends_on = [time_sleep.wait_workers]
 }
 
 # resource "terraform_data" "swarm_playbook" {

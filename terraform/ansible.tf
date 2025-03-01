@@ -16,7 +16,7 @@ locals {
     { 
       manager_ips = [digitalocean_droplet.manager.ipv4_address] 
       worker_ips = digitalocean_droplet.workers[*].ipv4_address
-      ansible_user = var.ansible_user
+      ansible_user = var.ansible_ssh_user
       ansible_ssh_private_key_file = var.ansible_ssh_private_key_file
     }
   )

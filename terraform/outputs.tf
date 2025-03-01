@@ -7,9 +7,9 @@ output "manager_ip" {
 }
 
 output "worker_status" {
-  value = digitalocean_droplet.worker[*].status
+  value = digitalocean_droplet.workers[*].status
 }
 
 output "worker_ip" {
-  value = digitalocean_droplet.worker[*].ipv4_address
+  value = digitalocean_droplet.workers[*].ipv4_address
 }

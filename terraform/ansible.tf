@@ -15,7 +15,7 @@ locals {
     "${path.module}/templates/inventory.ini.tftpl",
     { 
       manager_ips = [digitalocean_droplet.manager.ipv4_address] 
-      worker_ips = digitalocean_droplet.worker[*].ipv4_address
+      worker_ips = digitalocean_droplet.workers[*].ipv4_address
     }
   )
 }

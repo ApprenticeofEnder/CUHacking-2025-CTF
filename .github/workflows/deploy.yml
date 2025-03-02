@@ -80,6 +80,7 @@ jobs:
         run: docker push "${{ env.IMAGE_NAME_FULL_LC }}"
 
       - name: Deploy
+        timeout-minutes: 5
         env:
           DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
           # For some reason DO spaces uses an AWS prefix????????
@@ -97,7 +98,14 @@ jobs:
           cd $TERRAFORM_DIR
           tofu plan -out .terraform-plan
           tofu apply .terraform-plan
-          MANAGER_IP=$(tofu output -json manager_ip | jq .)
+          MANAGER_IP=$(tofu output -json manager_ip | jq -r .)
           echo $MANAGER_IP
-          WORKER_IP_0=$(tofu output -json worker_ip | jq .)
+          WORKER_IP_0=$(tofu output -json worker_ip | jq -r '.[0]')
           echo $WORKER_IP_0
+          WORKER_IP_1=$(tofu output -json worker_ip | jq -r '.[1]')
+          echo $WORKER_IP_1
+
+          while
+            ssh -q -o BatchMode=yes -i ${{ vars.SSH_PRIVATE_KEY_FILE }} root@$MANAGER_IP exit
+            [[ $? == "0" ]]
+          do echo "Attempting to connect to manager..."; done

@@ -98,6 +98,7 @@ jobs:
           cd $TERRAFORM_DIR
           tofu plan -out .terraform-plan
           tofu apply .terraform-plan
+          cat inventory.ini
           MANAGER_IP=$(tofu output -json manager_ip | jq -r .)
           echo $MANAGER_IP
           WORKER_IP_0=$(tofu output -json worker_ip | jq -r '.[0]')

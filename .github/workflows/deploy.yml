@@ -50,34 +50,34 @@ jobs:
           tofu init
           tofu validate
 
-      - name: Set version
-        id: release
-        run: echo ::set-output name=version::$(git describe --always)
-
-      - name: Set image details
-        id: image
-        env:
-          IMAGE_TAG: ${{ steps.release.outputs.version }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-        run: |
-          IMAGE_NAME_LC="${IMAGE_NAME,,}"
-          echo "IMAGE_NAME_LC=$IMAGE_NAME_LC" >> ${GITHUB_ENV}
-          echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> ${GITHUB_ENV}
-          echo "IMAGE_NAME_FULL_LC=${{ env.REGISTRY }}/$IMAGE_NAME_LC:${{ env.IMAGE_TAG }}" >> ${GITHUB_ENV}
-
-      - name: Build container image
-        env:
-          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@postgres:5432/${{ env.DB_NAME }}
-        run: |
-          docker build --secret id=DATABASE_URL \
-            -t "${{ env.IMAGE_NAME_FULL_LC }}" \
-            challenge
-
-      - name: Docker Login
-        run: echo ${{ secrets.CI_PAT }} | docker login ${{ env.REGISTRY }} -u ${{ github.repository_owner }} --password-stdin
-
-      - name: Push image to Docker Registry
-        run: docker push "${{ env.IMAGE_NAME_FULL_LC }}"
+      # - name: Set version
+      #   id: release
+      #   run: echo ::set-output name=version::$(git describe --always)
+      #
+      # - name: Set image details
+      #   id: image
+      #   env:
+      #     IMAGE_TAG: ${{ steps.release.outputs.version }}
+      #     IMAGE_NAME: ${{ env.IMAGE_NAME }}
+      #   run: |
+      #     IMAGE_NAME_LC="${IMAGE_NAME,,}"
+      #     echo "IMAGE_NAME_LC=$IMAGE_NAME_LC" >> ${GITHUB_ENV}
+      #     echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> ${GITHUB_ENV}
+      #     echo "IMAGE_NAME_FULL_LC=${{ env.REGISTRY }}/$IMAGE_NAME_LC:${{ env.IMAGE_TAG }}" >> ${GITHUB_ENV}
+      #
+      # - name: Build container image
+      #   env:
+      #     DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@postgres:5432/${{ env.DB_NAME }}
+      #   run: |
+      #     docker build --secret id=DATABASE_URL \
+      #       -t "${{ env.IMAGE_NAME_FULL_LC }}" \
+      #       challenge
+      #
+      # - name: Docker Login
+      #   run: echo ${{ secrets.CI_PAT }} | docker login ${{ env.REGISTRY }} -u ${{ github.repository_owner }} --password-stdin
+      #
+      # - name: Push image to Docker Registry
+      #   run: docker push "${{ env.IMAGE_NAME_FULL_LC }}"
 
       - name: Deploy
         timeout-minutes: 5

@@ -38,32 +38,3 @@ resource "null_resource" "ansible_inventory" {
   }
 }
 
-
-
-resource "ansible_playbook" "docker_playbook" {
-  name = "all"
-  playbook = "playbooks/docker.yml"
-  depends_on = [time_sleep.wait_workers]
-}
-
-# resource "terraform_data" "swarm_playbook" {
-#   provisioner "local-exec" {
-#     command = "ansible-playbook -i inventory.yml playbooks/swarm.yml"
-#   }
-#   depends_on = [terraform_data.docker_playbook]
-# }
-#
-# locals {
-#   deploy_vars_json = jsonencode({
-#     image_registry_username = var.image_registry_username
-#     image_registry_password = var.image_registry_password
-#     postgres_password = var.postgres_password
-#   })
-# }
-#
-# resource "terraform_data" "deploy_playbook" {
-#   provisioner "local-exec" {
-#     command = "ansible-playbook -i inventory.yml playbooks/deploy.yml --extra-vars '${local.deploy_vars_json}'"
-#   }
-#   depends_on = [terraform_data.docker_playbook]
-# }

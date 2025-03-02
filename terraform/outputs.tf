@@ -17,3 +17,7 @@ output "worker_ip" {
 output "ansible_ini_file" {
   value = local.ansible_ini_file
 }
+
+output "ansible_ini_content" {
+  value = local.ansible_ini_content
+}

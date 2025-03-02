@@ -20,7 +20,9 @@ locals {
       ansible_ssh_private_key_file = var.ansible_ssh_private_key_file
     }
   )
+  ansible_ini_file = "${path.module}/${var.ansible_ini_file}"
 }
+
 
 resource "null_resource" "ansible_inventory" {
   triggers = {
@@ -32,7 +34,7 @@ resource "null_resource" "ansible_inventory" {
   provisioner "local-exec" {
     command = format(
       "cat <<\"EOF\" > \"%s\"\n%s\nEOF",
-      var.ansible_ini_file,
+      local.ansible_ini_file,
       local.ansible_ini_content
     )
   }

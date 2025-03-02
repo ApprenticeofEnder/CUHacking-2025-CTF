@@ -103,12 +103,17 @@ jobs:
           WORKER_IP_0=$(tofu output -json worker_ip | jq -r '.[0]')
           WORKER_IP_1=$(tofu output -json worker_ip | jq -r '.[1]')
 
-          while
-            RESULT=$(ssh -q -o BatchMode=yes ConnectTimeout=5 -i ${{ vars.SSH_PRIVATE_KEY_FILE }} root@$MANAGER_IP echo ok 2>&1) 
-            [[ $RESULT == "ok" ]]
-          do echo "Attempting to connect to manager..."; done
+          test_connection() {
+            local IP="$1"
+            while
+              RESULT=$(ssh -q -o BatchMode=yes ConnectTimeout=5 -i ${{ vars.SSH_PRIVATE_KEY_FILE }} root@$IP echo ok 2>&1)
+              echo $RESULT
+              [[ $RESULT == "ok" ]]
+            do echo "Attempting to connect to $IP..."; done
+          }
 
-          while
-            RESULT=$(ssh -q -o BatchMode=yes ConnectTimeout=5 -i ${{ vars.SSH_PRIVATE_KEY_FILE }} root@$WORKER_IP_0 echo ok 2>&1) 
-            [[ $RESULT == "ok" ]]
-          do echo "Attempting to connect to manager..."; done
+          test_connection $MANAGER_IP
+          test_connection $WORKER_IP_0
+          test_connection $WORKER_IP_1
+
+          ansible-playbook -i inventory.ini playbooks/docker.yml

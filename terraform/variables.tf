@@ -61,3 +61,7 @@ variable "ansible_ssh_private_key_file" {
   type = string
 }
 
+variable "ansible_ini_file" {
+  type = string
+  default = "inventory.ini"
+}

@@ -118,3 +118,4 @@ jobs:
 
           export ANSIBLE_HOST_KEY_CHECKING=False
           ansible-playbook -i inventory.ini playbooks/docker.yml
+          ansible-playbook -i inventory.ini playbooks/swarm.yml

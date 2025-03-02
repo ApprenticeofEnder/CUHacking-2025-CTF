@@ -27,6 +27,7 @@ locals {
 resource "null_resource" "ansible_inventory" {
   triggers = {
     template = local.ansible_ini_content
+    timestamp = "${timestamp()}"
   }
 
   # Render to local file on machine

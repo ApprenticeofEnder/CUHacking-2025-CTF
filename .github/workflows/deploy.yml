@@ -116,4 +116,5 @@ jobs:
           test_connection $WORKER_IP_0
           test_connection $WORKER_IP_1
 
+          export ANSIBLE_HOST_KEY_CHECKING=False
           ansible-playbook -i inventory.ini playbooks/docker.yml

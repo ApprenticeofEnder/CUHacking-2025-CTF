@@ -106,6 +106,6 @@ jobs:
           echo $WORKER_IP_1
 
           while
-            ssh -q -o BatchMode=yes -i ${{ vars.SSH_PRIVATE_KEY_FILE }} root@$MANAGER_IP exit
+            ssh -q -o BatchMode=yes ConnectTimeout=5 -i ${{ vars.SSH_PRIVATE_KEY_FILE }} root@$MANAGER_IP echo ok 2>&1 
             [[ $? == "0" ]]
           do echo "Attempting to connect to manager..."; done

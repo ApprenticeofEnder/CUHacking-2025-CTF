@@ -16,7 +16,7 @@
 - hosts: worker
   become: true
   vars:
-    manager_ip: ""
+    manager_ip: 
   tasks:
     - name: Get worker node join token
       set_fact:
@@ -26,5 +26,5 @@
       community.general.docker_swarm:
         state: join
         join_token: "{{ join_token_worker }}"
-        advertise_addr: "{{ manager_ip }}"
-        remote_addrs: "{{ hostvars[groups['manager'][0]].ansible_host }}"
+        advertise_addr: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+        remote_addrs: "{{ manager_ip }}"

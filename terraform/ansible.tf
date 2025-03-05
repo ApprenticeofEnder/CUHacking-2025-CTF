@@ -10,34 +10,31 @@ resource "time_sleep" "wait_workers" {
   create_duration = "30s"
 }
 
-locals {
-  ansible_ini_content = templatefile(
+module "ansible_ini" {
+  source = "${path.module}/modules/saved_file"
+
+  file_contents = templatefile(
     "${path.module}/templates/inventory.ini.tftpl",
-    { 
-      manager_ips = [digitalocean_droplet.manager.ipv4_address] 
-      worker_ips = digitalocean_droplet.workers[*].ipv4_address
-      ansible_user = var.ansible_ssh_user
+    {
+      manager_ips                  = [digitalocean_droplet.manager.ipv4_address]
+      worker_ips                   = digitalocean_droplet.workers[*].ipv4_address
+      ansible_user                 = var.ansible_ssh_user
       ansible_ssh_private_key_file = var.ansible_ssh_private_key_file
     }
   )
-  ansible_ini_file = "${path.module}/${var.ansible_ini_file}"
+  output_file = "${path.module}/${var.ansible_ini_file}"
 }
 
+module "ansible_vault" {
+  source = "${path.module}/modules/saved_file"
 
-resource "null_resource" "ansible_inventory" {
-  triggers = {
-    template = local.ansible_ini_content
-    timestamp = "${timestamp()}"
-  }
-
-  # Render to local file on machine
-  # https://github.com/hashicorp/terraform/issues/8090#issuecomment-291823613
-  provisioner "local-exec" {
-    command = format(
-      "cat <<\"EOF\" > \"%s\"\n%s\nEOF",
-      local.ansible_ini_file,
-      local.ansible_ini_content
-    )
-  }
+  file_contents = templatefile(
+    "${path.module}/templates/vault.yml.tftpl",
+    {
+      image_registry_username = var.image_registry_username
+      image_registry_password = var.image_registry_password
+    }
+  )
+  output_file = "${path.module}/${var.ansible_vault_file}"
 }
 

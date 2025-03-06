@@ -38,3 +38,4 @@ module "ansible_vault" {
   output_file = "${path.module}/${var.ansible_vault_file}"
 }
 
+

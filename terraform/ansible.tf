@@ -10,6 +10,11 @@ resource "time_sleep" "wait_workers" {
   create_duration = "30s"
 }
 
+locals {
+  ini_file = "${path.module}/${var.ansible_ini_file}"
+  raw_vault_file = "/tmp/${var.ansible_vault_file}"
+}
+
 module "ansible_ini" {
   source = "${path.module}/modules/saved_file"
 
@@ -22,10 +27,10 @@ module "ansible_ini" {
       ansible_ssh_private_key_file = var.ansible_ssh_private_key_file
     }
   )
-  output_file = "${path.module}/${var.ansible_ini_file}"
+  output_file = local.ini_file
 }
 
-module "ansible_vault" {
+module "ansible_vault_raw" {
   source = "${path.module}/modules/saved_file"
 
   file_contents = templatefile(
@@ -33,9 +38,17 @@ module "ansible_vault" {
     {
       image_registry_username = var.image_registry_username
       image_registry_password = var.image_registry_password
+      postgres_password = var.postgres_password
+      postgres_db = var.postgres_db
     }
   )
-  output_file = "${path.module}/${var.ansible_vault_file}"
+  output_file = local.raw_vault_file 
 }
 
+resource "null_resource" "ansible_vault" {
+  provisioner "local-exec" {
+    command = "bash ${path.module}/external/create_ansible_vault.sh ${local.raw_vault_file}" 
+  }
 
+  depends_on = [module.ansible_vault_raw]
+}

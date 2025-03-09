@@ -79,8 +79,8 @@ jobs:
       # - name: Push image to Docker Registry
       #   run: docker push "${{ env.IMAGE_NAME_FULL_LC }}"
 
-      - name: Deploy
-        timeout-minutes: 10
+      - name: Deploy Infra
+        timeout-minutes: 5
         env:
           DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
           # For some reason DO spaces uses an AWS prefix????????
@@ -93,15 +93,21 @@ jobs:
           TF_VAR_image_registry_password: ${{ secrets.CI_PAT }}
           TF_VAR_challenge_image_name: ${{ env.IMAGE_NAME_LC }}
           TF_VAR_challenge_image_tag: ${{ env.IMAGE_TAG }}
+
         run: |
           # apply infra changes
           cd $TERRAFORM_DIR
           tofu plan -out .terraform-plan
           tofu apply .terraform-plan
-          cat inventory.ini
+
+      - name: Deploy App
+        timeout-minutes: 5
+        run: |
           MANAGER_IP=$(tofu output -json manager_ip | jq -r .)
           WORKER_IP_0=$(tofu output -json worker_ip | jq -r '.[0]')
           WORKER_IP_1=$(tofu output -json worker_ip | jq -r '.[1]')
+
+          echo "Manager IP: $MANAGER_IP"
 
           test_connection() {
             local IP="$1"
@@ -117,9 +123,10 @@ jobs:
           test_connection $WORKER_IP_1
 
           # Wait for apt locks to unlock, etc.
-          sleep 30
+          # sleep 30
 
           export ANSIBLE_HOST_KEY_CHECKING=False
+          export ANSIBLE_VAULT_PASSWORD_FILE=vars/vault.secret
           ansible-playbook -i inventory.ini playbooks/docker.yml
           ansible-playbook -i inventory.ini playbooks/swarm.yml --extra-vars="manager_ip=$MANAGER_IP"
-          ansible-playbook -i inventory.ini playbooks/deploy.yml 
+          ansible-playbook -i inventory.ini playbooks/deploy.yml

@@ -1,13 +1,9 @@
 ---
 - hosts: manager
   become: true
-  vars:
-    postgres_password: "postgres"
-    postgres_db: "pilots"
-    # uncomment this when ready
-    # challenge_image: "ghcr.io/apprenticeofender/cuhacking-2025-ctf:latest"
-    image_registry_username: ""
-    image_registry_password: ""
+  vars_files:
+    - "../vars/vars.yml"
+    - "../vars/vault.yml"
   tasks:
     - name: log in to container registry
       community.docker.docker_login:

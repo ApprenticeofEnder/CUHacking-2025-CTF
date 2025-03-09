@@ -41,3 +41,5 @@ terraform.rc
 *.pub
 ansible-inventory
 *.env
+*.secret
+vault.yml

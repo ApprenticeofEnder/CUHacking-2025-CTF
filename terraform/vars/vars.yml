@@ -1,2 +1,4 @@
 image_registry_username: "{{ vault_image_registry_username }}"
 image_registry_password: "{{ vault_image_registry_password }}"
+postgres_db: "{{ vault_postgres_db }}"
+postgres_password: "{{ vault_postgres_password }}"

@@ -1,5 +1,5 @@
 variable "file_contents" {
-  type = map(string)
+  type = string
 }
 
 variable "output_file" {

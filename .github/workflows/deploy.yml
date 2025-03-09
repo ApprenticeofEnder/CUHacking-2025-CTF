@@ -128,6 +128,8 @@ jobs:
           # Wait for apt locks to unlock, etc.
           # sleep 30
 
+          # Yes the Terraform and Ansible directories are the same, I'll fix this after CUHacking
+          cd $TERRAFORM_DIR
           export ANSIBLE_HOST_KEY_CHECKING=False
           export ANSIBLE_VAULT_PASSWORD_FILE=vars/vault.secret
           ansible-playbook -i inventory.ini playbooks/docker.yml

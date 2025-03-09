@@ -12,7 +12,7 @@ resource "time_sleep" "wait_workers" {
 
 locals {
   ini_file = "${path.module}/${var.ansible_ini_file}"
-  raw_vault_file = "/tmp/${var.ansible_vault_file}"
+  raw_vault_file = "/tmp/vault.yml"
 }
 
 module "ansible_ini" {

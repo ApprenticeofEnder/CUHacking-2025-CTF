@@ -66,11 +66,6 @@ variable "ansible_ini_file" {
   default = "inventory.ini"
 }
 
-variable "ansible_vault_file" {
-  type    = string
-  default = "vars/vault.yml"
-}
-
 variable "ansible_vault_password_file" {
   type = string
   default = "vars/vault.secret"

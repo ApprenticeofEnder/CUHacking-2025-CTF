@@ -99,14 +99,17 @@ jobs:
           cd $TERRAFORM_DIR
           tofu plan -out .terraform-plan
           tofu apply .terraform-plan
+          echo "MANAGER_IP=$(tofu output -json manager_ip | jq -r .)" >> "$GITHUB_ENV"
+          echo "WORKER_IP_0=$(tofu output -json worker_ip | jq -r '.[0]')" >> "$GITHUB_ENV"
+          echo "WORKER_IP_1=$(tofu output -json worker_ip | jq -r '.[1]')" >> "$GITHUB_ENV"
 
       - name: Deploy App
         timeout-minutes: 5
+        env:
+          MANAGER_IP: ${{ env.MANAGER_IP }}
+          WORKER_IP_0: ${{ env.WORKER_IP_0 }}
+          WORKER_IP_1: ${{ env.WORKER_IP_1 }}
         run: |
-          MANAGER_IP=$(tofu output -json manager_ip | jq -r .)
-          WORKER_IP_0=$(tofu output -json worker_ip | jq -r '.[0]')
-          WORKER_IP_1=$(tofu output -json worker_ip | jq -r '.[1]')
-
           echo "Manager IP: $MANAGER_IP"
 
           test_connection() {

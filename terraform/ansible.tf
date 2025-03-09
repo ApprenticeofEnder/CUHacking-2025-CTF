@@ -46,6 +46,10 @@ module "ansible_vault_raw" {
 }
 
 resource "null_resource" "ansible_vault" {
+  triggers = {
+    timestamp = "${timestamp()}"
+  }
+
   provisioner "local-exec" {
     command = "bash ${path.module}/external/create_ansible_vault.sh ${local.raw_vault_file}" 
   }

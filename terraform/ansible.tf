@@ -51,7 +51,7 @@ resource "null_resource" "ansible_vault" {
   }
 
   provisioner "local-exec" {
-    command = "bash ${path.module}/external/create_ansible_vault.sh ${local.raw_vault_file}" 
+    command = "bash ${path.module}/external/create_ansible_vault.sh ${module.ansible_vault_raw.file_path}" 
   }
 
   depends_on = [module.ansible_vault_raw]

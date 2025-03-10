@@ -4,10 +4,15 @@
   vars_files:
     - "../vars/vars.yml"
     - "../vars/vault.yml"
+  vars:
+    image_registry: "ghcr.io"
+    challenge_image: ""
+    challenge_port: 3000
+
   tasks:
     - name: log in to container registry
       community.docker.docker_login:
-        registry_url: "ghcr.io"
+        registry_url: "{{ image_registry }}"
         username: "{{ image_registry_username }}"
         password: "{{ image_registry_password }}"
 
@@ -17,7 +22,7 @@
 
     - name: create postgres service
       community.docker.docker_swarm_service:
-        name: postgres
+        name: "{{ postgres_hostname }}"
         image: "postgres:17"
         mounts:
           - source: postgres_volume
@@ -26,3 +31,11 @@
         env:
           POSTGRES_PASSWORD: "{{ postgres_password }}"
           POSTGRES_DB: "{{ postgres_db }}"
+          POSTGRES_USER: "{{ postgres_user }}"
+
+    - name: create challenge service
+      community.docker.docker_swarm_service:
+        name: challenge
+        image: "{{ challenge_image }}"
+        env:
+          DATABASE_URL: "{{ postgres_url }}"

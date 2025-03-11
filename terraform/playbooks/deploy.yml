@@ -15,6 +15,10 @@
         registry_url: "{{ image_registry }}"
         username: "{{ image_registry_username }}"
         password: "{{ image_registry_password }}"
+    - name: create challenge network
+      community.docker.docker_network:
+        name: challenge_network
+        ingress: true
 
     - name: create postgres volume
       community.docker.docker_volume:
@@ -24,6 +28,8 @@
       community.docker.docker_swarm_service:
         name: "{{ postgres_hostname }}"
         image: "postgres:17"
+        networks:
+          - challenge_network
         mounts:
           - source: postgres_volume
             target: "/var/lib/postgresql/data"
@@ -37,6 +43,8 @@
       community.docker.docker_swarm_service:
         name: challenge
         image: "{{ challenge_image }}"
+        networks:
+          - challenge_network
         env:
           DATABASE_URL: "{{ postgres_url }}"
         publish:

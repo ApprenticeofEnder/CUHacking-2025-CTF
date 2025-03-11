@@ -1,23 +1,26 @@
 ---
-- hosts: all
+- name: "Docker"
+  hosts: all
   become: true
   tasks:
     - name: Wait for sudo
-      become: yes
-      shell:  while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+      become: true
+      changed_when: false
+      ansible.builtin.shell: while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
 
     - name: Install aptitude
-      apt:
+      ansible.builtin.apt:
         name: aptitude
-        state: latest
+        state: present
         update_cache: true
 
     - name: Wait for sudo
-      become: yes
-      shell:  while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+      become: true
+      changed_when: false
+      ansible.builtin.shell: while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
 
     - name: Install required system packages
-      apt:
+      ansible.builtin.apt:
         pkg:
           - apt-transport-https
           - ca-certificates
@@ -26,29 +29,30 @@
           - python3-pip
           - virtualenv
           - python3-setuptools
-        state: latest
+        state: present
         update_cache: true
 
     - name: Add Docker GPG apt Key
-      apt_key:
+      ansible.builtin.apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
     - name: Add Docker Repository
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: deb https://download.docker.com/linux/ubuntu jammy stable
         state: present
 
     - name: Wait for sudo
-      become: yes
-      shell:  while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+      become: true
+      changed_when: false
+      ansible.builtin.shell: while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
 
     - name: Update apt and install docker-ce
-      apt:
+      ansible.builtin.apt:
         name: docker-ce
-        state: latest
+        state: present
         update_cache: true
 
     - name: Install Docker Module for Python
-      pip:
+      ansible.builtin.pip:
         name: docker

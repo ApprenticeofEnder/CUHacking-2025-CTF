@@ -3,7 +3,7 @@ variable "postgres_capacity" {
   default = "10Gi"
 }
 
-variable "postgres_app_name" {
+variable "postgres_hostname" {
   default = "postgres"
 }
 
@@ -37,18 +37,6 @@ variable "image_registry_username" {
 variable "image_registry_password" {
   type      = string
   sensitive = true
-}
-
-variable "challenge_image_name" {
-  default = "apprenticeofender/cuhacking-2025-ctf"
-}
-
-variable "challenge_image_tag" {
-  default = "latest"
-}
-
-variable "challenge_port" {
-  default = 3000
 }
 
 # Ansible Variables

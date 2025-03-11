@@ -40,6 +40,8 @@ module "ansible_vault_raw" {
       image_registry_password = var.image_registry_password
       postgres_password = var.postgres_password
       postgres_db = var.postgres_db
+      postgres_hostname = var.postgres_hostname
+      postgres_user = var.postgres_user
     }
   )
   output_file = local.raw_vault_file 

@@ -19,6 +19,7 @@
       community.docker.docker_network:
         name: challenge_network
         ingress: true
+        scope: "global"
 
     - name: create postgres volume
       community.docker.docker_volume:

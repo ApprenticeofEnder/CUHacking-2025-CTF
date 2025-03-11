@@ -40,5 +40,5 @@
         env:
           DATABASE_URL: "{{ postgres_url }}"
         publish:
-          published_port: 80
-          target_port: challenge_port
+          - published_port: 80
+            target_port: challenge_port

@@ -128,7 +128,7 @@ jobs:
           test_connection $WORKER_IP_1
 
           # Wait for apt locks to unlock, etc.
-          # sleep 30
+          sleep 30 
 
           # Yes the Terraform and Ansible directories are the same, I'll fix this after CUHacking
           cd $TERRAFORM_DIR

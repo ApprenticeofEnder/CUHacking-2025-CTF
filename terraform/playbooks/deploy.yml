@@ -10,6 +10,21 @@
     challenge_port: 3000
 
   tasks:
+    - name: remove existing services and network
+      block:
+        - name: remove existing services
+          community.docker.docker_swarm_service:
+            name: "{{ item }}"
+            state: absent
+          loop:
+            - challenge
+            - "{{ postgres_hostname }}"
+
+        - name: remove existing network
+          community.docker.docker_network:
+            name: challenge_network
+            state: absent
+
     - name: log in to container registry
       community.docker.docker_login:
         registry_url: "{{ image_registry }}"

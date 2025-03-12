@@ -18,12 +18,12 @@
 
     - name: create challenge network
       community.docker.docker_network:
-        state: present
         name: challenge_network
         driver: overlay
         driver_options:
           ingress: true
         scope: global
+        force: true
 
     - name: create postgres volume
       community.docker.docker_volume:

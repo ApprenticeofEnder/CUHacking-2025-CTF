@@ -1,5 +1,6 @@
 ---
-- hosts: manager
+- name: "Deploy Services"
+  hosts: manager
   become: true
   vars_files:
     - "../vars/vars.yml"

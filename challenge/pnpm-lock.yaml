@@ -19,13 +19,10 @@ importers:
         version: 0.3.0(drizzle-orm@0.39.0(@types/pg@8.11.11)(pg@8.13.1)(postgres@3.4.5))
       nunjucks:
         specifier: ^3.2.4
-        version: 3.2.4(chokidar@3.6.0)
+        version: 3.2.4(chokidar@4.0.3)
       postgres:
         specifier: ^3.4.5
         version: 3.4.5
-      svelte-headless-table:
-        specifier: ^0.18.3
-        version: 0.18.3(svelte@5.19.3)
       ts-postgres:
         specifier: ^2.0.4
         version: 2.0.4(@types/node@20.17.16)
@@ -107,7 +104,7 @@ importers:
         version: 5.19.3
       svelte-check:
         specifier: ^4.0.0
-        version: 4.1.4(svelte@5.19.3)(typescript@5.7.3)
+        version: 4.1.4(picomatch@2.3.1)(svelte@5.19.3)(typescript@5.7.3)
       sveltekit-superforms:
         specifier: ^2.23.1
         version: 2.23.1(@sveltejs/kit@2.16.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.3)(vite@6.0.11(@types/node@20.17.16)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(svelte@5.19.3)(vite@6.0.11(@types/node@20.17.16)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)))(@types/json-schema@7.0.15)(svelte@5.19.3)(typescript@5.7.3)
@@ -2290,26 +2287,6 @@ packages:
       svelte:
         optional: true
 
-  svelte-headless-table@0.18.3:
-    resolution: {integrity: sha512-1zVnqXW0dvn6ZceYa94k+ziK+w5Dj9nlWYTQGXBv2JhM0resj9w7CWpclZK1TJwAALfEeH4InPBPO87L5fr+nQ==}
-    peerDependencies:
-      svelte: ^4.0.0
-
-  svelte-keyed@2.0.0:
-    resolution: {integrity: sha512-7TeEn+QbJC2OJrHiuM0T8vMBkms3DNpTE+Ir+NtnVBnBMA78aL4f1ft9t0Hn/pBbD/TnIXi4YfjFRAgtN+DZ5g==}
-    peerDependencies:
-      svelte: ^4.0.0
-
-  svelte-render@2.0.1:
-    resolution: {integrity: sha512-RpB0SurwXm4xhjvHHtjeqMmvd645FURb79GFOotScOSqnKK5vpqBgoBPGC0pp+E/eZgDSQ9rRAdn/+N4ys1mXQ==}
-    peerDependencies:
-      svelte: ^4.0.0
-
-  svelte-subscribe@2.0.1:
-    resolution: {integrity: sha512-eKXIjLxB4C7eQWPqKEdxcGfNXm2g/qJ67zmEZK/GigCZMfrTR3m7DPY93R6MX+5uoqM1FRYxl8LZ1oy4URWi2A==}
-    peerDependencies:
-      svelte: ^4.0.0
-
   svelte@5.19.3:
     resolution: {integrity: sha512-rb/bkYG9jq67OCWikMvaPnfOobyGn0JizVDwHpdeBtLiNXPMcoA9GTFC3BhptP7xGNquUU8J5GiS7PlGlfDAFA==}
     engines: {node: '>=18'}
@@ -3742,7 +3719,9 @@ snapshots:
     dependencies:
       reusify: 1.0.4
 
-  fdir@6.4.3: {}
+  fdir@6.4.3(picomatch@2.3.1):
+    optionalDependencies:
+      picomatch: 2.3.1
 
   file-entry-cache@8.0.0:
     dependencies:
@@ -3975,13 +3954,13 @@ snapshots:
   normalize-url@8.0.1:
     optional: true
 
-  nunjucks@3.2.4(chokidar@3.6.0):
+  nunjucks@3.2.4(chokidar@4.0.3):
     dependencies:
       a-sync-waterfall: 1.0.1
       asap: 2.0.6
       commander: 5.1.0
     optionalDependencies:
-      chokidar: 3.6.0
+      chokidar: 4.0.3
 
   object-assign@4.1.1: {}
 
@@ -4311,11 +4290,11 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte-check@4.1.4(svelte@5.19.3)(typescript@5.7.3):
+  svelte-check@4.1.4(picomatch@2.3.1)(svelte@5.19.3)(typescript@5.7.3):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       chokidar: 4.0.3
-      fdir: 6.4.3
+      fdir: 6.4.3(picomatch@2.3.1)
       picocolors: 1.1.1
       sade: 1.8.1
       svelte: 5.19.3
@@ -4331,26 +4310,6 @@ snapshots:
       postcss: 8.5.1
       postcss-scss: 4.0.9(postcss@8.5.1)
     optionalDependencies:
-      svelte: 5.19.3
-
-  svelte-headless-table@0.18.3(svelte@5.19.3):
-    dependencies:
-      svelte: 5.19.3
-      svelte-keyed: 2.0.0(svelte@5.19.3)
-      svelte-render: 2.0.1(svelte@5.19.3)
-      svelte-subscribe: 2.0.1(svelte@5.19.3)
-
-  svelte-keyed@2.0.0(svelte@5.19.3):
-    dependencies:
-      svelte: 5.19.3
-
-  svelte-render@2.0.1(svelte@5.19.3):
-    dependencies:
-      svelte: 5.19.3
-      svelte-subscribe: 2.0.1(svelte@5.19.3)
-
-  svelte-subscribe@2.0.1(svelte@5.19.3):
-    dependencies:
       svelte: 5.19.3
 
   svelte@5.19.3:

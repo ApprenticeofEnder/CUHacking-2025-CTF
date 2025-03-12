@@ -11,4 +11,6 @@
 		<h2 class="flex justify-between">{notice.title} {notice.author}</h2>
 		<p>{notice.note}</p>
 	</div>
+{:else}
+	<h2>Nothing to report.</h2>
 {/each}

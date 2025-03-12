@@ -13,6 +13,10 @@
         name: aptitude
         state: present
         update_cache: true
+      register: apt_status
+      until: apt_status is success
+      delay: 6
+      retries: 10
 
     - name: Wait for sudo
       become: true
@@ -31,6 +35,10 @@
           - python3-setuptools
         state: present
         update_cache: true
+      register: apt_status
+      until: apt_status is success
+      delay: 6
+      retries: 10
 
     - name: Add Docker GPG apt Key
       ansible.builtin.apt_key:
@@ -42,16 +50,15 @@
         repo: deb https://download.docker.com/linux/ubuntu jammy stable
         state: present
 
-    - name: Wait for sudo
-      become: true
-      changed_when: false
-      ansible.builtin.shell: while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
-
     - name: Update apt and install docker-ce
       ansible.builtin.apt:
         name: docker-ce
         state: present
         update_cache: true
+      register: apt_status
+      until: apt_status is success
+      delay: 6
+      retries: 10
 
     - name: Install Docker Module for Python
       ansible.builtin.pip:

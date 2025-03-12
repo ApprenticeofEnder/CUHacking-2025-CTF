@@ -15,11 +15,15 @@
         registry_url: "{{ image_registry }}"
         username: "{{ image_registry_username }}"
         password: "{{ image_registry_password }}"
+
     - name: create challenge network
       community.docker.docker_network:
+        state: present
         name: challenge_network
-        ingress: true
-        scope: "global"
+        driver: overlay
+        driver_options:
+          ingress: true
+        scope: global
 
     - name: create postgres volume
       community.docker.docker_volume:

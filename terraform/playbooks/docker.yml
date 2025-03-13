@@ -3,11 +3,6 @@
   hosts: all
   become: true
   tasks:
-    - name: Wait for sudo
-      become: true
-      changed_when: false
-      ansible.builtin.shell: while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
-
     - name: Install aptitude
       ansible.builtin.apt:
         name: aptitude
@@ -17,11 +12,6 @@
       until: apt_status is success
       delay: 6
       retries: 10
-
-    - name: Wait for sudo
-      become: true
-      changed_when: false
-      ansible.builtin.shell: while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
 
     - name: Install required system packages
       ansible.builtin.apt:

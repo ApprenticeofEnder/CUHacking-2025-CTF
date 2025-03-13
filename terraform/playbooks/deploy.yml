@@ -9,11 +9,13 @@
     image_registry: "ghcr.io"
     challenge_image: ""
     challenge_port: 3000
+    challenge_instances: 3
+    db_instances: 1
 
   tasks:
-    - name: remove existing services and network
+    - name: Remove existing services and network
       block:
-        - name: remove existing services
+        - name: Remove existing services
           community.docker.docker_swarm_service:
             name: "{{ item }}"
             state: absent
@@ -21,18 +23,18 @@
             - challenge
             - "{{ postgres_hostname }}"
 
-        - name: remove existing network
+        - name: Remove existing network
           community.docker.docker_network:
             name: challenge_network
             state: absent
 
-    - name: log in to container registry
+    - name: Log in to container registry
       community.docker.docker_login:
         registry_url: "{{ image_registry }}"
         username: "{{ image_registry_username }}"
         password: "{{ image_registry_password }}"
 
-    - name: create challenge network
+    - name: Create challenge network
       community.docker.docker_network:
         name: challenge_network
         driver: overlay
@@ -41,11 +43,11 @@
         scope: global
         force: true
 
-    - name: create postgres volume
+    - name: Create postgres volume
       community.docker.docker_volume:
         name: postgres_volume
 
-    - name: create postgres service
+    - name: Create postgres service
       community.docker.docker_swarm_service:
         name: "{{ postgres_hostname }}"
         image: "postgres:17"
@@ -55,17 +57,19 @@
           - source: postgres_volume
             target: "/var/lib/postgresql/data"
             type: volume
+        replicas: "{{ db_instances | int }}"
         env:
           POSTGRES_PASSWORD: "{{ postgres_password }}"
           POSTGRES_DB: "{{ postgres_db }}"
           POSTGRES_USER: "{{ postgres_user }}"
 
-    - name: create challenge service
+    - name: Create challenge service
       community.docker.docker_swarm_service:
         name: challenge
         image: "{{ challenge_image }}"
         networks:
           - challenge_network
+        replicas: "{{ challenge_instances | int }}"
         env:
           DATABASE_URL: "{{ postgres_url }}"
         publish:

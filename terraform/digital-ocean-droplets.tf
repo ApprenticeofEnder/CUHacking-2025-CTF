@@ -21,7 +21,7 @@ resource "digitalocean_droplet" "workers" {
 
 resource "digitalocean_domain" "cuhacking" {
   name = "cuhacking-ctf.xyz"
-  ip_address = digitalocean_droplet.manager
+  ip_address = digitalocean_droplet.manager.ipv4_address
 }
 
 locals {
@@ -110,5 +110,5 @@ resource "digitalocean_project" "cuhacking_ctf" {
   description = "Resources for the CUHacking 2025 CTF"
   purpose     = "Other"
   environment = "Development"
-  resources   = concat(local.droplet_urns, [digitalocean_domain.cuhacking])
+  resources   = concat(local.droplet_urns, [digitalocean_domain.cuhacking.urn])
 }

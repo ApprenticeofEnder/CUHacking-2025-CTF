@@ -19,6 +19,11 @@ resource "digitalocean_droplet" "workers" {
   ssh_keys = [data.digitalocean_ssh_key.cuhacking.id]
 }
 
+resource "digitalocean_domain" "cuhacking" {
+  name = "cuhacking-ctf.xyz"
+  ip_address = digitalocean_droplet.manager
+}
+
 locals {
   droplet_ids  = concat([digitalocean_droplet.manager.id], [for s in digitalocean_droplet.workers.*.id : s])
   droplet_urns = concat([digitalocean_droplet.manager.urn], [for s in digitalocean_droplet.workers.*.urn : s])
@@ -105,21 +110,5 @@ resource "digitalocean_project" "cuhacking_ctf" {
   description = "Resources for the CUHacking 2025 CTF"
   purpose     = "Other"
   environment = "Development"
-  resources   = concat(local.droplet_urns)
+  resources   = concat(local.droplet_urns, [digitalocean_domain.cuhacking])
 }
-
-
-# resource "digitalocean_record" "cuhacking_ctf" {
-#   domain = data.digitalocean_domain.robertbabaev_tech.id
-#   type   = "A"
-#   name   = "cuhacking-ctf"
-#   value  = "${digitalocean_kubernetes_cluster.ctf_k8s.ipv4_address}"
-# }
-
-# resource "digitalocean_project" "cuhacking_ctf" {
-#   name        = "CUHacking 2025 CTF"
-#   description = "Resources for the CUHacking 2025 CTF"
-#   purpose     = "Other"
-#   environment = "Development"
-#   resources   = [digitalocean_kubernetes_cluster.ctf_k8s.urn]
-# }

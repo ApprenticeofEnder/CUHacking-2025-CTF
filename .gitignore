@@ -43,3 +43,4 @@ ansible-inventory
 *.env
 *.secret
 vault.yml
+__pycache__
